@@ -1,0 +1,105 @@
+.admin-container {
+    display: flex;
+    flex-direction: column; // Barra de navegación arriba
+    height: 100vh; // Altura completa de la ventana
+
+    .admin-navigation-wrapper {
+        display: flex;
+        justify-content: space-between; // Espacia el logo y el botón de logout
+        align-items: center; // Centra verticalmente
+        padding: 20px; // Espaciado
+        font-family: 'Roboto', sans-serif; // Fuente Roboto
+
+        .logo {
+            h1 {
+                margin: 0; // Elimina márgenes
+                font-size: 24px; // Tamaño del logo
+            }
+        }
+
+        .logout {
+            cursor: pointer; // Cambia el cursor al pasar sobre el icono
+            font-size: 24px; // Tamaño del icono
+        }
+    }
+
+    .admin-page-wrapper {
+        display: flex; // Disposición horizontal
+        flex: 1; // Ocupa el resto del espacio
+
+        .left-side-wrapper {
+            flex: 1; // Ocupa 50% del ancho
+            background-color: $gris_claro; // Color de fondo
+            padding: 20px; // Espaciado
+
+            .add-products,
+            .update-products,
+            .delete-products {
+                margin-bottom: 20px; // Espaciado entre secciones
+                //padding: 15px; // Espaciado interno
+                //background-color: #E8F6E8; // Fondo de las secciones
+                border-radius: 5px; // Bordes redondeados
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+                color: $gris;
+            }
+            button {
+                width: 100%; 
+                height: 60px;
+                margin-bottom: 20px; 
+                background-color: $verde_oscuro;
+                color: $gris_claro; 
+                border: none; 
+                border-radius: 5px; 
+                font-size: 1.5em; 
+                cursor: pointer; 
+                display: flex; 
+                align-items: center;
+                justify-content: center; 
+            }
+
+            button:hover {
+                background-color: $verde_claro; 
+                color:$gris;
+            }
+        }
+
+        .right-side-wrapper {
+            flex: 1; // Ocupa 50% del ancho
+            background-color: $gris_claro; // Color de fondo
+            padding: 20px; // Espaciado
+            flex: 1; // Ocupa 50% del ancho
+            background-color: $gris_claro; // Color de fondo
+            padding: 20px; // Espaciado
+
+            .add-posts,
+            .update-posts,
+            .delete-posts {
+                margin-bottom: 20px; // Espaciado entre secciones
+                //padding: 15px; // Espaciado interno
+                //background-color: #E8F6E8; // Fondo de las secciones
+                border-radius: 5px; // Bordes redondeados
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+                color: $gris;
+            }
+            button {
+                width: 100%; 
+                height: 60px;
+                margin-bottom: 20px; 
+                background-color: $verde_oscuro;
+                color: $gris_claro; 
+                border: none; 
+                border-radius: 5px; 
+                font-size: 1.5em; 
+                cursor: pointer; 
+                display: flex; 
+                align-items: center;
+                justify-content: center; 
+            }
+
+            button:hover {
+                background-color: $verde_claro; 
+                color:$gris;
+            }
+        }
+    }
+}

@@ -1,0 +1,81 @@
+.login-container {
+    background-image: url('../../src/static/assets/login_image.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    form {
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+    }
+
+    input {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        color: $gris;
+
+        &:focus {
+            border-color: $verde_claro;
+            outline: none;
+        }
+    }
+
+    button {
+        background-color: $verde_claro;
+        color: $gris;
+        border: none;
+        padding: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: $verde_oscuro;
+        color:$gris_claro;
+    }
+
+    // Estilo del icono de cabecera
+    .icon-header {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+
+        .icon-circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80px; /* Tamaño del círculo */
+            height: 80px; /* Tamaño del círculo */
+            background-color: $verde_claro; /* Color de fondo del círculo */
+            border-radius: 50%; /* Hace el contenedor redondo */
+        }
+
+        svg {
+            font-size: 3rem; /* Aumenta el tamaño del icono */
+            color: $gris; /* Color del icono */
+            //color:$gris_antracita;
+        }
+    }
+
+    .logo-wrapper {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        color: $gris_claro;
+    }
+}

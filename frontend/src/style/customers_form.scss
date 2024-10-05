@@ -1,0 +1,182 @@
+.customers-form-container {
+    align-items: flex-start; 
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: $gris_claro;
+
+    .left-side-wrapper {
+        flex: 1;
+        margin-right: 20px;
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: $verde_oscuro;
+        }
+
+        .customers-data-wrapper {
+            form {
+                display: flex;
+                flex-direction: column;
+
+                // Clase para alinear nombre y apellidos en fila
+                .form-data-row {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 10px; // Espacio entre los inputs de nombre y apellidos
+
+                    .name-field, .surname-field {
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column; // Etiqueta arriba, input abajo
+                        
+                        // Aplicamos los mismos estilos de .form-data
+                        label {
+                            font-weight: bold;
+                            margin-bottom: 5px;
+                            color: $gris;
+                            
+                        }
+
+                        input {
+                            padding: 10px;
+                            border: 1px solid $verde_oscuro;
+                            border-radius: 4px;
+                            font-size: 16px;
+                            color: $grey;
+
+                            &:focus {
+                                border-color: $verde_oscuro;
+                                outline: none;
+                            }
+                        }
+                    }
+                }
+
+                // Estilos para el resto de los campos
+                .form-data {
+                    margin-top: 20px;
+                    display: flex;
+                    flex-direction: column; // Etiquetas encima de los inputs
+
+                    label {
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        color: $gris;
+                    }
+
+                    input {
+                        padding: 10px;
+                        border: 1px solid $verde_oscuro;
+                        border-radius: 4px;
+                        font-size: 16px;
+                        color: $gris;
+
+                        &:focus {
+                            border-color: $verde_claro;
+                            outline: none;
+                        }
+                    }
+                }
+
+                .btn-customers-form {
+                    button {
+                        background-color: #0f1b27;
+                        border-color: #0f1b27;
+                        color:$gris_claro;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 50px;
+                        cursor: pointer;
+                        font-size: 16px;
+                        width: 100%;
+                        margin-top: 20px;   
+                    }
+                }
+            }
+        }
+    }
+
+    .right-side-wrapper {
+        flex: 1; // Ocupa el espacio restante
+        //background-color: #F9F9F9; // Color de fondo ligero
+        border-radius: 8px; // Bordes redondeados
+    
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color:$verde_oscuro; // Verde oscuro para los encabezados
+        }
+    
+        table {
+            width: 100%;
+            border-collapse: collapse; // Elimina el espacio entre celdas
+            margin-bottom: 20px;
+    
+            th, td {
+                padding: 10px; // Espacio interno
+                //border: 1px solid $button; // Borde verde pastel
+                text-align: left; // Alinear texto a la izquierda
+                color: $gris;
+
+            }
+            td {
+                font-size: 0.80em;
+            }
+    
+            th {
+                background-color: $verde_claro;
+                //background-color: #E8F6E8; // Fondo verde medio para los encabezados
+                //color: white; // Texto blanco en los encabezados
+            }
+    
+            tr:nth-child(even) {
+                //background-color: #E8F6E8; // Fondo claro para filas pares
+            }
+        }
+        .totals-wrapper{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+       
+            h2 {
+                font-size: 16px;
+                color: $gris; // Verde oscuro para el total
+                margin-top: 20px; // Espacio superior
+                //background-color: #E8F6E8;
+            }
+            span{
+                color: $gris;
+                font-size: 10px;
+            }
+        }
+        .pay-wrapper{
+            
+            .creditcard-pay, .transfer-pay{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 25px;
+            }
+        }
+        h2 {
+            font-size: 16px;
+            color: $verde_oscuro; // Verde oscuro para el total
+            margin-top: 20px; // Espacio superior
+            //background-color: #E8F6E8;
+        }
+        label{
+            font-size: 0.80em;
+            color: $gris;
+        }
+        .privacity-wrapper{
+            margin-top: 55px;
+            p{
+                font-size: 16px;
+                color: $gris;
+            }
+        }
+        
+    }
+}

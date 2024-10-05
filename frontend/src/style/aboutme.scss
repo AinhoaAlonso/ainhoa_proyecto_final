@@ -1,0 +1,83 @@
+.aboutme-container {
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 20px; 
+}
+
+.aboutme-nav-wrapper {
+    
+    align-items: center; 
+    padding: 10px 0; 
+    border-bottom: 1px solid $verde_oscuro; 
+}
+
+.logo h1 {
+    font-size: 24px; 
+    color: #4A4A4A; 
+}
+
+.nav-links-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    gap: 30px;
+}
+
+.nav-link {
+    margin-left: 20px; 
+}
+
+.nav-link .active {
+    text-decoration: none; 
+    color: $gris; 
+}
+
+.aboutme-page-wrapper {
+    display: flex;
+    justify-content: space-between; /* Espaciado entre las dos columnas */
+    align-items: flex-start; /* Alinea los elementos al inicio */
+    padding: 20px; /* Espacio alrededor del contenido */
+    box-sizing: border-box; /* Incluye el padding dentro del ancho y alto */
+}
+
+.left-side-wrapper {
+    flex: 1; 
+    padding-right: 20px; 
+}
+
+.left-side-wrapper img {
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 10px; 
+    display: block;
+    object-fit: cover;
+}
+
+
+.right-side-wrapper {
+    flex: 1;
+}
+.right-side-wrapper h2 {
+    font-size: 1em; 
+    color: $verde_oscuro; 
+    margin-top: 20px; 
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.right-side-wrapper ul {
+    margin: 0; 
+    padding-left: 20px;
+    list-style-type: disc; 
+    color: $gris;
+    font-size: 0.85em;
+}
+
+.right-side-wrapper p {
+    line-height: 1.5; 
+    color: $gris; 
+    font-size: 0.85em,
+}
