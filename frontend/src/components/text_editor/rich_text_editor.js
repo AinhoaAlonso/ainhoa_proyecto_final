@@ -1,44 +1,52 @@
-import React, {Component} from 'react';
-import {EditorState, convertToRaw, ContentState} from 'draft-js';
-import {Editor} from 'react-draft-wysiwyg';
+import React, { Component } from 'react';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
-
-
-export default class RichEditorText extends Component{
-    constructor(props){
+export default class RichEditorText extends Component {
+    constructor(props) {
         super(props);
-
         this.state = {
-            editorState: EditorState.createEmpty()
-        }
+            editorState: EditorState.createEmpty(),
+            initialContentLoaded: false, // Para rastrear si se ha cargado el contenido inicial
+        };
         this.onEditorStateChange = this.onEditorStateChange.bind(this);
     }
 
-    componentDidMount() {
-        const { contentToEdit } = this.props;
-        if (contentToEdit) {
+    static getDerivedStateFromProps(nextProps, prevState) {
+        const { contentToEdit } = nextProps;
+        if (contentToEdit && !prevState.initialContentLoaded) {
             const contentBlock = htmlToDraft(contentToEdit);
             if (contentBlock) {
                 const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
                 const editorState = EditorState.createWithContent(contentState);
-                this.setState({ editorState });
+                return {
+                    editorState: editorState,
+                    initialContentLoaded: true, // Marca como cargado
+                };
             }
         }
+        // Si no hay contenido para editar y el contenido anterior estaba presente
+        if (!contentToEdit && prevState.initialContentLoaded) {
+            return {
+                editorState: EditorState.createEmpty(), // Reinicia el editor
+                initialContentLoaded: false, // Reinicia la carga del contenido
+            };
+        }
+        return null;
     }
-    
 
-    onEditorStateChange(editorState){
-        this.setState({ editorState}, () => {
+    onEditorStateChange(editorState) {
+        this.setState({ editorState }, () => {
             this.props.handleRichTextEditor(
-                //Vamos a tomar el contenido de draft, lo va a revisar y si esta bien lo va a convertir a un string
                 draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
             );
         });
     }
-    render(){
-        return(
+
+    render() {
+        return (
             <div className='rich_editor_container'>
                 <Editor
                     editorState={this.state.editorState}

@@ -5,29 +5,23 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button, Popover, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addToCart } from "../reducers/cartSlice";
-
-
-
+import image_logo from '../../src/static/assets/image_logo.jpg';
 
 const Shop = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [anchorEl, setAnchorEl] = useState(null); // Estado para el popover
+    const [anchorEl, setAnchorEl] = useState(null); 
     const [products, setProducts] = useState([]);
-    const dispatch = useDispatch(); // Crear la función para despachar acciones de Redux
-    const navigate = useNavigate(); // Hook para redirección
+    const dispatch = useDispatch(); 
+    const navigate = useNavigate(); 
 
-    const cartItems = useSelector((state) => state.cart.cartItems); // Obtener productos en el carrito
+    const cartItems = useSelector((state) => state.cart.cartItems); 
 
     useEffect(() => {
         axios.get("http://127.0.0.1:8000/products")
         .then(response => {
-            //const categories = response.data.map(product => product.products_category);
-            //const uniqueCategories = [...new Set(categories)];
-            //const filteredProducts = response.data.filter(product => product.products_category === categoryName);
-            //setCategories(uniqueCategories);
             setProducts(response.data);
             const uniqueCategories = [...new Set(response.data.map(product => product.products_category))];
             setCategories(uniqueCategories);
@@ -45,7 +39,7 @@ const Shop = () => {
         setAnchorEl(anchorEl ? null : event.currentTarget); // Alternar el estado del Popover
     };
 
-    const open = Boolean(anchorEl); // Determinar si el Popover está abierto
+    const open = Boolean(anchorEl); 
 
     const handleGoCart = (event) => {
         navigate('/cart');
@@ -62,9 +56,9 @@ const Shop = () => {
         return <h2>Cargando categorías...</h2>;
     }
 
-    if (error) {
+    /*if (error) {
         return <h2>Error: {error}</h2>;
-    }
+    }*/
     const getTotal=()=>{
         return cartItems.reduce((total, item) => {
             return total + item.products_price * item.quantity; 
@@ -75,9 +69,14 @@ const Shop = () => {
         <div className="shop-container">
             <div className='up-nav-wrapper'>
                 <div className='up-nav-left-wrapper'>
-                <NavLink to="/" className="active">
-                    <h1>Aqui va a estar el Logo</h1>
-                </NavLink>
+                    <div className="shop-logo">
+                        <NavLink to="/" className="active">
+                            <img src={image_logo} alt="Logo" />
+                        </NavLink>
+                    </div>
+                    <div className="shop-title">
+                        <h1>Shop</h1>
+                    </div>
                 </div>
                 <div className='up-nav-right-wrapper'>
                     <div className='up-nav-link-side'>
@@ -198,7 +197,11 @@ const Shop = () => {
             <div className="product-list-wrapper">
                 {filteredProducts.map(({ products_id, products_image_url, products_name, products_price }) => (
                     <div className="product_item" key={products_id}>
-                        <img className="product-image" src={products_image_url} alt={products_name} />
+                        {products_image_url && products_image_url.trim() !== "" ? (
+                            <img className="product-image" src={products_image_url} alt={products_name} />
+                        ) : (
+                            <div className="placeholder-image" />
+                        )}
                         <div className="product-details-wrapper">
                             <p className="product-name">{products_name}</p>
                             <p className="product-price">{products_price}€</p>

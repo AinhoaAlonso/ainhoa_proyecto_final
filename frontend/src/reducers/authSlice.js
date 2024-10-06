@@ -1,8 +1,8 @@
-// src/reducers/authSlice.js
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// Thunk para manejar el login asincrónico
+
 export const loginUser = createAsyncThunk(
     'auth/loginUser',
     async ({ email, password }, { rejectWithValue }) => {
@@ -15,6 +15,8 @@ export const loginUser = createAsyncThunk(
             if (response.status === 200) {
                 
                 localStorage.setItem("access_token", response.data.access_token);
+                localStorage.setItem("userEmail", email); 
+
                 return {
                     ...response.data,
                     users_email: email,
@@ -33,7 +35,7 @@ const authSlice = createSlice({
         loggedInStatus: localStorage.getItem("access_token") ? "LOGGED_IN" : "NOT LOGGED IN",
         errorMsg: null,
         userRole: null,
-        userEmail: null
+        userEmail: localStorage.getItem("userEmail") || null,
     },
     reducers: {
         logout: (state) => {
@@ -41,9 +43,12 @@ const authSlice = createSlice({
             state.userRole = null;
             state.userEmail = null;
             localStorage.removeItem("access_token");
+            localStorage.removeItem("userEmail"); 
         },
-        setUserEmail: (state, action) => { // Asegúrate de tener este reducer
+        setUserEmail: (state, action) => { 
             state.userEmail = action.payload;
+            localStorage.setItem("userEmail", action.payload);
+
         },
     },
     extraReducers: (builder) => {

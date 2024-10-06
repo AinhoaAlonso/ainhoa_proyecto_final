@@ -1,9 +1,17 @@
 .blogform-container {
-    display: flex; 
-    justify-content: space-between; 
-    gap: 20px; 
+    max-width: 1100px;
+    width: 100%;
     background-color: $gris_claro;
+    height: 100vh;
 
+    .blogform-navigation-wrapper{
+        background-color: white;
+        padding: 20px;
+    }
+
+    .blogform-wrapper{
+        display: flex;
+    }
     .blogform-left-side-wrapper,
     .blogform-right-side-wrapper {
         
@@ -20,10 +28,14 @@
     .blogform-right-side-wrapper {
         flex: 1; 
         margin-left: 10px; 
+        .posts-item_wrapper{
+            height: 550px;
+            overflow: auto;
+        }
     }
 
     h1 {
-        font-size: 24px;
+        font-size: 16px;
         margin-bottom: 20px;
         color: $verde_oscuro;
     }
@@ -35,11 +47,27 @@
         .blogform-data-wrapper {
             display: flex;
             flex-direction: column;
+            input{
+                width: 100%;
+                max-width: 100%;
+                padding: 10px;
+                border: 1px solid $verde_claro;
+                border-radius: 4px;
+                font-size: 16px;
+                box-sizing: border-box;
+                color: $gris;
+
+                &:focus {
+                    border-color: $verde_oscuro;
+                    outline: none;
+                }
+            }
 
             .blogform-data-row {
                 display: flex;
                 justify-content: space-between;
                 gap: 20px;
+                margin-top: 10px;
 
                 input {
                     width: 100%;
@@ -56,6 +84,14 @@
                         outline: none;
                     }
                 }
+                button{
+                    margin-top: 0px;
+                    margin-top: 0px;
+                    border: 1px solid #C6EBC3;
+                    font-size: 16px;
+                    background: white;
+                }
+
             }
 
             .blogform-data {
@@ -67,18 +103,14 @@
                     border: 1px solid #C6EBC3;
                     margin-top: 10px;
                     background-color: $gris_claro;
-                    //height: 500px;
-
-                    .text-editor-wrapper rdw-editor-wrapper{
-                        //height: 372px;
-                    }
+                    
                     .rdw-editor-toolbar{
                         background: none;
                         border: none;
                         border-bottom: 1px solid #C6EBC3;
                     }
                     .rdw-editor-main {
-                        height:400px;
+                        height:200px;
                     }
 
                 }
@@ -100,25 +132,32 @@
                         outline: none;
                     }
                 }
+            }
+            .image-uploaders {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                
+                .dz-message {
+                    padding: 10px;
+                    border-radius: 4px;
+                    text-align: center;
+                    color: $gris;
 
-                .image-uploaders {
-                    margin-top: 20px;
-
-                    .dz-message {
-                        padding: 10px;
-                        border: 2px dashed #A8D5BA;
-                        border-radius: 4px;
-                        text-align: center;
-                        color: $gris;
-
-                        &:hover {
-                            border-color: $verde_oscuro;
-                        }
+                    &:hover {
+                        border-color: $verde_oscuro;
                     }
+                }
+                button{
+                    background: none;
+                    border: none;
+                    font-size: 1.5em;
+                    cursor: pointer;
+
                 }
             }
 
-            button {
+            .save {
                 margin-top: 20px;
                 padding: 12px 24px;
                 background-color: $verde_oscuro;
@@ -151,10 +190,10 @@
         .post-item-left{
             flex: 3;
             img {
-                max-width: 50%; // Asegura que la imagen no exceda el ancho del contenedor
-                height: auto; // Mantiene la proporción de la imagen
-                border-radius: 4px; // Bordes redondeados para la imagen
-                margin-bottom: 10px; // Espacio entre la imagen y el texto
+                max-width: 50%; 
+                height: auto; 
+                border-radius: 4px; 
+                margin-bottom: 10px; 
             }
             p {
                 line-height: 1;
@@ -177,7 +216,7 @@
         }
     }
     .dropzone .dz-preview.dz-error .dz-error-mark {
-        display: none; /* Oculta el botón de eliminar */
+        display: none; 
     }
     .dropzone .dz-preview.dz-error .dz-error-message{
         display: none;

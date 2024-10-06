@@ -1,4 +1,3 @@
-// App.js
 import React, { Component } from 'react';
 import {
     BrowserRouter as Router,
@@ -33,18 +32,45 @@ class App extends Component {
         return (
             <div className='container'>
                 <div className='app-navigation-wrapper'>
-                    {loggedInStatus}
+                    {/*{loggedInStatus}*/}
                     <Router>
                         <div>
                             <Routes>
                                 <Route path='/' element={<Home />} />
-                                <Route 
+                                <Route
                                     path='/login' 
                                     element={loggedInStatus === "LOGGED_IN" && userRole === "admin" ? <Navigate to="/admin" /> : <Login />}
                                 />
-                                <Route path='/admin' element={<Admin />} />
-                                <Route path='/admin/product-form' element={<ProductForm />} />
-                                <Route path='/admin/blog-form' element={<BlogForm />} />
+                                <Route 
+                                    path='/admin' 
+                                    element={
+                                        loggedInStatus === "LOGGED_IN" ? (
+                                            <Admin />
+                                        ) : (
+                                            <Navigate to="/login" />
+                                        )
+                                    }
+                                />
+                                <Route 
+                                    path='/admin/product-form' 
+                                    element={
+                                        loggedInStatus === "LOGGED_IN" ? (
+                                            <ProductForm />
+                                        ) : (
+                                            <Navigate to="/login" />
+                                        )
+                                    }
+                                />
+                                <Route 
+                                    path='/admin/blog-form' 
+                                    element={
+                                        loggedInStatus === "LOGGED_IN" ? (
+                                            <BlogForm />
+                                        ) : (
+                                            <Navigate to="/login" />
+                                        )
+                                    }
+                                />
                                 <Route path='/userdata' element={<UserData />} />
                                 <Route path='/register' element={<Register />} />
                                 <Route path='/about-me' element={<AboutMe />} />

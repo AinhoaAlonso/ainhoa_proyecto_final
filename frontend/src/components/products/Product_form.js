@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone"; // Importa useDropzone de react-dropzone
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash, faEraser } from "@fortawesome/free-solid-svg-icons";
 import { NavLink, useNavigate } from "react-router-dom";
+import NavigationEdit from "../navigation/navigation_edit";
 
 import "../../../node_modules/dropzone/dist/min/dropzone.min.css";
 
@@ -24,13 +24,10 @@ const ProductForm = () => {
 
     const handleDrop = (acceptedFiles) => {
         if (acceptedFiles.length > 0) {
-            //const newProduct = { name: acceptedFiles[0].name };
             const file = acceptedFiles[0];
-            setFiles(acceptedFiles); // Actualiza el estado con los archivos aceptados
+            setFiles(acceptedFiles); 
             setImagePreview(URL.createObjectURL(file));
-            uploadImageToImageBB(file);
-            //uploadImageToImageBB(acceptedFiles[0]); // Sube solo el primer archivo
-            //setProducts((prevProducts) => [...prevProducts, newProduct]);
+            uploadImageToImageBB(file);          
         } else {
             console.warn("No se aceptaron archivos."); // Agrega un mensaje de advertencia si no hay archivos aceptados
         }
@@ -47,7 +44,7 @@ const ProductForm = () => {
     });
 
     const handleRemoveImage = () => {
-        setFiles(null); // Restablece el archivo
+        setFiles(null); 
         setImagePreview(null); // Restablece la vista previa
         setImageUrl(null); // Borra la URL de la imagen
     };
@@ -68,15 +65,15 @@ const ProductForm = () => {
     };
 
     const uploadImageToImageBB = async (imageFile) => {
-        const apiKey = '0f491d8d00ee1bbd4f39764f40db5031'; // Api key de imgBB
+        const apiKey = '0f491d8d00ee1bbd4f39764f40db5031'; 
         let formData = new FormData();
         formData.append('image', imageFile);
 
         try {
             const response = await axios.post(`https://api.imgbb.com/1/upload?key=${apiKey}`, formData);
-            console.log("Respuesta de ImgBB:", response.data); // Log de la respuesta completa
+            console.log("Respuesta de ImgBB:", response.data); 
             if (response.data && response.data.data && response.data.data.url) {
-                setImageUrl(response.data.data.url); // Guarda la URL de la imagen
+                setImageUrl(response.data.data.url); 
             } else {
                 throw new Error("URL de la imagen no disponible");
             }
@@ -110,7 +107,7 @@ const ProductForm = () => {
         formData.append("products_category", category);
         formData.append("products_image_url", image_url);
 
-
+        console.log(editProductId);
         if (editProductId) {
             formData.append("products_id", editProductId);
 
@@ -128,7 +125,6 @@ const ProductForm = () => {
                             products_image_url: image_url,
                         };
 
-                        // Filtra el producto editado y lo agrega al principio del array
                         const filteredProducts = prevProducts.filter(product => product.products_id !== editProductId);
                         return [updatedProduct, ...filteredProducts];
                     });
@@ -144,7 +140,6 @@ const ProductForm = () => {
             for (let pair of formData.entries()) {
                 console.log("formadata", pair[0] + ': ' + pair[1]);
             }
-            //console.log(name,description,category,price,stock,image_url);
             axios.post("http://127.0.0.1:8000/insert/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     console.log("Respuesta insert product", response);
@@ -191,14 +186,18 @@ const ProductForm = () => {
             return <p>No hay productos disponibles.</p>;
         }
 
-
         return products.map(product => (
             <div key={product.products_id} className="products-item">
                 <div className="product-item-left">
-                    <h2>{product.products_name}</h2>
-                    <img src={product.products_image_url} alt={product.products_name} />
-                    <p><strong>Precio:</strong> {product.products_price}</p>
-                    <p><strong>Stock:</strong> {product.products_stock}</p>
+                    <div className="products-name-wrapper">
+                        <h2>{product.products_name}</h2>
+                    </div>
+                    <div className="details-wrapper">
+                        <img src={product.products_image_url} alt={product.products_name} />
+                        <p><strong>Precio:</strong> {product.products_price}</p>
+                        <p><strong>Stock:</strong> {product.products_stock}</p>
+                    </div>
+                    
                 </div>
                 <div className="product-item-right">
                     <button className="action-icon" onClick={() => handleEditClickProduct(product)}>
@@ -218,20 +217,10 @@ const ProductForm = () => {
 
     return (
         <div className="product-form-container">
-            <div className="logo">
-                <NavLink to="/" className="active">
-                    <h1>Aqui va a estar el Logo</h1>
-                </NavLink>
-            </div>
             <div className="product-form-wrapper">
                 <div className="product-form-left-side-wrapper">
                     <div className="title-close-wrapper">
-                        <div className="title">
-                            <h1>Formulario para añadir productos</h1>
-                        </div>
-                        <div className="close">
-                            <button onClick={goToAdmin}>X</button>
-                        </div>
+                        <h1>{editProductId ? "Editar Producto" : "Nuevo Producto"}</h1>
                     </div>
                     <form onSubmit={handleSubmitProductForm}>
                         <div className="form-data-wrapper">
@@ -247,6 +236,9 @@ const ProductForm = () => {
                                     <option value="Limpieza">Limpieza</option>
                                     <option value="Organización">Organización</option>
                                 </select>
+                                <button type="button" onClick={resetForm}>
+                                    <FontAwesomeIcon icon={faEraser} />
+                                </button>
                             </div>
                             <div className="form-data">
                                 <textarea
@@ -272,26 +264,18 @@ const ProductForm = () => {
                                         onChange={(e) => setStock(e.target.value)}
                                     />
                                 </div>
-                                <div className="image-uploaders" {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>
+                                <div className="image-uploaders" {...getRootProps()} style={{ border: '2px dashed #ccc',padding: '20px', textAlign: 'center' }}>
                                     <input {...getInputProps()} />
-                                    <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
-                                    {/*<p>{files.length > 0 ? `Archivo seleccionado: ${files[0].name}` : 'No hay archivos seleccionados'}</p>*/}
+                                    {!imagePreview && <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>}
                                     {imagePreview && <img src={imagePreview} alt="Vista previa" style={{ width: "100px", height: "100px", objectFit: "cover" }} />}
                                     {imagePreview && (
                                         <button type="button" onClick={handleRemoveImage}>
-                                            Eliminar Imagen
+                                            <FontAwesomeIcon icon={faTrash} />
                                         </button>
-                                )}
+                                    )}
                                 </div>
-                                {/* Mostrar la miniatura de la imagen seleccionada 
-                                {imagePreview && <img src={imagePreview} alt="Vista previa" style={{ width: "100px", height: "100px", objectFit: "cover" }} />}
-                                    <div className="image-preview">
-                                        <h3>Vista previa de la imagen:</h3>
-                                        <img src={imagePreview} alt="Vista previa" style={{ width: '100px', height: '100px' }} />
-                                    </div>
-                                )}*/}
                                 <div>
-                                    <button type="submit">Guardar</button>
+                                    <button className="save" type="submit">{editProductId ? "Actualizar" : "Guardar"}</button>
                                 </div>
                             </div>
                         </div>

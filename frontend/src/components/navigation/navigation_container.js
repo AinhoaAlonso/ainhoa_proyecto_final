@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import image_logo from '../../static/assets/image_logo.png';
+import image_logo from '../../static/assets/image_logo.jpg';
 
 
 const NavigationContainer = props => {

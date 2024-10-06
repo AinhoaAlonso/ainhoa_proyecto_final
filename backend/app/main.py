@@ -5,8 +5,6 @@ from datetime import timedelta
 from fastapi.security import OAuth2PasswordBearer
 from datetime import date
 
-
-#Importo la uvicacion donde tengo la conexion a la bbdd postgres
 from model.users_connection import UsersConnection
 from model.posts_connection import PostsConnection
 from model.products_connection import ProductsConnection
@@ -24,7 +22,7 @@ from schema.orders_schema import CreateOrderProductsSchema
 from schema.orders_schema import CreateCustomers
 from schema.orders_schema import CreateOrdersSchema
 
-#Creo instancias
+
 app = FastAPI()
 conn = UsersConnection()
 connp = PostsConnection()
@@ -39,7 +37,7 @@ app.add_middleware(
     allow_methods=["*"],  # Permitir todos los métodos (GET, POST, etc.)
     allow_headers=["*"],  # Permitir todos los encabezados
 )
-# ponemos decoradores que lo que hace es registrar la función, tenemos que decidir que funcion se va a ejecutar cuando llamemos a esta ruta(justo la que está debajo)
+
 
 @app.get("/posts")
 def show_posts():
@@ -130,7 +128,6 @@ async def insert_products(
         await connproducts.insert_products(data)
         return {"message": "Producto guardado con éxito"}
     except Exception as e:
-        #return {"error": str(e)}
         raise HTTPException(status_code=500, detail=f"Error al insertar producto: {str(e)}")
 
 @app.put("/update/products")
@@ -197,7 +194,7 @@ def customers_insert(customers_data: CreateCustomers):
         customers_id = connorders.insert_customers(data)
         return{
             "customers_id": customers_id,
-            **data #Lo combinamos con los datos originales
+            **data 
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al insertar cliente: {str(e)}")
@@ -212,7 +209,6 @@ def orderproducts_insert(orderproducts_data: CreateOrderProductsSchema):
 
 @app.post("/insert/orders")
 def orders_insert(orders_data: CreateOrdersSchema):
-    #data = orders_data.model_dump()
     data = {
         "orders_date": str(orders_data.orders_date),  
         "orders_total": float(orders_data.orders_total), 
@@ -223,7 +219,7 @@ def orders_insert(orders_data: CreateOrdersSchema):
         orders_id=connorders.insert_orders(data)
         return{
             "orders_id": orders_id,
-            **data #Lo combinamos con los datos originales
+            **data 
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al insertar pedido: {str(e)}")
@@ -236,9 +232,6 @@ def show_users():
 
 @app.post("/user/insert")
 def users_insert(users_data:CreateUsersSchema):
-    #para que se nos muestre como un diccionario clave/valor más visual
     data = users_data.model_dump()
-    # Ahora ya no lo vamos a imprimir, vamos a llamar a la funcion write para que lo escriba. Esta función está dentro de user_connection.py
-    #print(data)
     conn.write(data)
 

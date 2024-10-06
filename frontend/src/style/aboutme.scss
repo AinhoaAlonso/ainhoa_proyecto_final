@@ -2,10 +2,10 @@
     max-width: 1200px; 
     margin: 0 auto; 
     padding: 20px; 
+    margin-top: 10px;
 }
 
 .aboutme-nav-wrapper {
-    
     align-items: center; 
     padding: 10px 0; 
     border-bottom: 1px solid $verde_oscuro; 
@@ -36,10 +36,10 @@
 
 .aboutme-page-wrapper {
     display: flex;
-    justify-content: space-between; /* Espaciado entre las dos columnas */
-    align-items: flex-start; /* Alinea los elementos al inicio */
-    padding: 20px; /* Espacio alrededor del contenido */
-    box-sizing: border-box; /* Incluye el padding dentro del ancho y alto */
+    justify-content: space-between; 
+    align-items: flex-start; 
+    padding: 20px; 
+    box-sizing: border-box; 
 }
 
 .left-side-wrapper {
@@ -54,7 +54,6 @@
     display: block;
     object-fit: cover;
 }
-
 
 .right-side-wrapper {
     flex: 1;

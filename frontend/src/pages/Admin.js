@@ -1,13 +1,16 @@
 // src/pages/Admin.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate} from "react-router-dom";
 import axios from "axios";
 import { logout, setUserEmail } from "../reducers/authSlice"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from "react-router-dom";
-import ProductModal from "../components/modals/product-modal";
-import BlogModal from "../components/modals/blog_modal";
+//import { NavLink } from "react-router-dom";
+//import ProductModal from "../components/modals/product-modal";
+//import BlogModal from "../components/modals/blog_modal";
+import NavigationEdit from "../components/navigation/navigation_edit";
+import BlogForm from "../components/blog/blog_form";
+import ProductForm from "../components/products/Product_form";
 
 
 const Admin = () => {
@@ -16,6 +19,7 @@ const Admin = () => {
     const [errorMsg, setErrorMsg] = React.useState("");
     const [isProductModalOpen, setIsProductModalOpen]= useState(false);
     const [isBlogModalOpen, setIsBlogModalOpen]= useState(false);
+    const [activeForm, setActiveForm] = useState("product");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -91,47 +95,23 @@ const Admin = () => {
         navigate('/admin/blog-form');
     }
 
+    const handleFormChange = (form) => {
+        setActiveForm(form);
+    };
+
     return (
         <div className="admin-container">
             <div className="admin-navigation-wrapper">
                 <div className="logo">
-                    <NavLink to="/" className="active">
-                        <h1> Aqui va el Logo</h1>
-                    </NavLink>
+                    <NavigationEdit activeForm={activeForm} onFormChange={handleFormChange} />
                 </div>
                 <div className="logout">
                     <FontAwesomeIcon icon="fa-solid fa-user-check" onClick={handleLogout} alt="Cerrar sesión" />
                 </div>
             </div>
             <div className="admin-page-wrapper">
-                <div className="left-side-wrapper">
-                    <div className="add-products" >
-                        <button onClick={openProductForm}>Añadir producto nuevo</button>
-                        {/*<button onClick={openProductModal}>Añadir productos</button>
-                        <ProductModal isOpen={isProductModalOpen} onRequestClose={closeProductModal} />*/}
-                    </div>
-                    <div className="add-posts">
-                        <button onClick={openBlogForm}>Añadir posts nuevo</button>
-                    </div>
-                    {/*<div className="update-products">
-                        <button>Editar productos</button>
-                    </div>
-                    <div className="delete-products">
-                        <button>Eliminar productos</button>
-                    </div>*/}
-                </div>
-                {/*<div className="right-side-wrapper">
-                    <div className="add-posts" >
-                        <button onClick={openBlogModal}>Añadir posts</button>
-                        <BlogModal isOpen={isBlogModalOpen} onRequestClose={closeBlogModal} userEmail={userEmail} />
-                    </div>
-                    <div className="update-post">
-                        <button>Editar posts</button>
-                    </div>
-                    <div className="delete-posts">
-                        <button>Eliminar posts</button>
-                    </div>
-                </div>*/}
+                {activeForm === "product" && <ProductForm />}
+                {activeForm === "blog" && <BlogForm />}
             </div>
         </div>
     );

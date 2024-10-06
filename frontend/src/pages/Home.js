@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import blog_image from '../../src/static/assets/blog_image.jpg';
 import shop_image from '../../src/static/assets/shop_image.jpg';
-import image_logo from '../../src/static/assets/image_logo.png';
+import image_logo from '../../src/static/assets/image_logo.jpg';
 
 
 export default class Home extends Component{

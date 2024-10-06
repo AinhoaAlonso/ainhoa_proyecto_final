@@ -1,46 +1,54 @@
 .admin-container {
     display: flex;
-    flex-direction: column; // Barra de navegación arriba
-    height: 100vh; // Altura completa de la ventana
+    flex-direction: column; 
+    height: 100vh; 
+    max-width: 1100px;
+    width: 100%;
 
     .admin-navigation-wrapper {
         display: flex;
-        justify-content: space-between; // Espacia el logo y el botón de logout
-        align-items: center; // Centra verticalmente
-        padding: 20px; // Espaciado
-        font-family: 'Roboto', sans-serif; // Fuente Roboto
+        justify-content: space-between; 
+        align-items: center; 
+        padding: 20px; 
+        font-family: 'Roboto', sans-serif; 
 
-        .logo {
-            h1 {
-                margin: 0; // Elimina márgenes
-                font-size: 24px; // Tamaño del logo
-            }
+        .logo,
+        .nav-container,
+        .up-nav-right-wrapper {
+            width: 100%;
         }
 
         .logout {
-            cursor: pointer; // Cambia el cursor al pasar sobre el icono
-            font-size: 24px; // Tamaño del icono
+            cursor: pointer; 
+            font-size: 24px; 
         }
     }
 
     .admin-page-wrapper {
-        display: flex; // Disposición horizontal
-        flex: 1; // Ocupa el resto del espacio
+        display: flex; 
+        flex: 1; 
+
+        button{
+            background: none; 
+            border: none; 
+            color: $verde_oscuro; 
+            text-decoration: underline; 
+            cursor: pointer;
+        }
 
         .left-side-wrapper {
-            flex: 1; // Ocupa 50% del ancho
-            background-color: $gris_claro; // Color de fondo
-            padding: 20px; // Espaciado
+            flex: 1; 
+            background-color: $gris_claro; 
+            padding: 20px; 
 
             .add-products,
             .update-products,
             .delete-products {
-                margin-bottom: 20px; // Espaciado entre secciones
-                //padding: 15px; // Espaciado interno
-                //background-color: #E8F6E8; // Fondo de las secciones
-                border-radius: 5px; // Bordes redondeados
+                margin-bottom: 20px; 
+                border-radius: 5px; 
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
                 color: $gris;
+                width: 100%;
             }
             button {
                 width: 100%; 
@@ -64,22 +72,21 @@
         }
 
         .right-side-wrapper {
-            flex: 1; // Ocupa 50% del ancho
-            background-color: $gris_claro; // Color de fondo
-            padding: 20px; // Espaciado
-            flex: 1; // Ocupa 50% del ancho
-            background-color: $gris_claro; // Color de fondo
-            padding: 20px; // Espaciado
+            flex: 1; 
+            background-color: $gris_claro; 
+            padding: 20px; 
+            flex: 1; 
+            background-color: $gris_claro; 
+            padding: 20px; 
 
             .add-posts,
             .update-posts,
             .delete-posts {
-                margin-bottom: 20px; // Espaciado entre secciones
-                //padding: 15px; // Espaciado interno
-                //background-color: #E8F6E8; // Fondo de las secciones
-                border-radius: 5px; // Bordes redondeados
+                margin-bottom: 20px; 
+                border-radius: 5px;
                 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
                 color: $gris;
+                width: 100%;
             }
             button {
                 width: 100%; 
