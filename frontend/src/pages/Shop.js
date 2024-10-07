@@ -22,10 +22,12 @@ const Shop = () => {
     useEffect(() => {
         axios.get("http://127.0.0.1:8000/products")
         .then(response => {
-            setProducts(response.data);
-            const uniqueCategories = [...new Set(response.data.map(product => product.products_category))];
+            const activeProducts = response.data.filter(product => product.products_is_active);
+            setProducts(activeProducts);
+            const uniqueCategories = [...new Set(activeProducts.map(product => product.products_category))];
             setCategories(uniqueCategories);
             setLoading(false);
+
         })
         .catch(error => {
             console.log("Error al traer los productos", error);
@@ -56,9 +58,6 @@ const Shop = () => {
         return <h2>Cargando categorías...</h2>;
     }
 
-    /*if (error) {
-        return <h2>Error: {error}</h2>;
-    }*/
     const getTotal=()=>{
         return cartItems.reduce((total, item) => {
             return total + item.products_price * item.quantity; 

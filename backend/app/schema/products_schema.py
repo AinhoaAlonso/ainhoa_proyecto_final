@@ -10,6 +10,7 @@ class ProductsSchema(BaseModel):
     products_image_url: Optional[str]
     products_stock: int
     products_category: str
+    products_is_active: bool
 
 class InsertProductsSchema(BaseModel):
     products_name: str 

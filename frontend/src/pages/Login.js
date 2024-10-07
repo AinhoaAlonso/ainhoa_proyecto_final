@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Navigate } from "react-router-dom";
-import { loginUser } from "../reducers/authSlice"; // Importa la acción de login
+import { loginUser } from "../reducers/authSlice"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 
@@ -30,6 +30,16 @@ const Login = () => {
         }
     }, [errorMsg]);
 
+    useEffect(() => {
+        if (loggedInStatus === "LOGGED_IN") {
+            const timer = setTimeout(() => {
+                navigate('/admin');
+            }, 2000); // Espera de 2 segundos
+    
+            return () => clearTimeout(timer); // Limpia el temporizador si el componente se desmonta
+        }
+    }, [loggedInStatus]);
+    
 
     const handleSubmitLogin = (event) => {
         event.preventDefault();
@@ -44,6 +54,9 @@ const Login = () => {
         
     }; 
 
+    const goToHome =()=>{
+        navigate("/");
+    }
 
     if (loggedInStatus === "LOGGED_IN" && userRole === "admin") {
         return <Navigate to="/admin" replace />;
@@ -53,7 +66,7 @@ const Login = () => {
         <div className="login-container">
             <div className="icon-header">
                 <div className="icon-circle">
-                    <FontAwesomeIcon icon={faUser} />
+                    <FontAwesomeIcon icon={faUser} onClick={goToHome}/>
                 </div>
             </div>
             <form onSubmit={handleSubmitLogin}>
@@ -75,7 +88,10 @@ const Login = () => {
             </form>
             {localErrorMsg && <div style={{ color: "red" }}>{localErrorMsg}</div>}
             {loggedInStatus === "LOGGED_IN" && (
+               
                 <div style={{ color: "green" }}>¡Login exitoso! Redirigiendo...</div>
+                
+                
             )}
         </div>
     );

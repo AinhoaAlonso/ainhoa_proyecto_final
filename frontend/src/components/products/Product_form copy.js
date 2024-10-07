@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone"; // Importa useDropzone de react-dropzone
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash, faEraser } from "@fortawesome/free-solid-svg-icons";
-//import { NavLink, useNavigate } from "react-router-dom";
-//import NavigationEdit from "../navigation/navigation_edit";
+import { NavLink, useNavigate } from "react-router-dom";
+import NavigationEdit from "../navigation/navigation_edit";
 
 import "../../../node_modules/dropzone/dist/min/dropzone.min.css";
 
@@ -14,24 +14,13 @@ const ProductForm = () => {
     const [price, setPrice] = useState("");
     const [image_url, setImageUrl] = useState(null);
     const [stock, setStock] = useState("");
-    const [category, setCategory] = useState("");
-    const [isActive, setIsActive] = useState(true);
+    const [category, setCategory] = useState("Limpieza");
     const [editMode, setEditMode] = useState(false);
     const [products, setProducts] = useState([]);
     const [editProductId, setEditProductId] = useState(null);
     const [files, setFiles] = useState([]); 
     const [imagePreview, setImagePreview] = useState(null);
-    const isMounted = useRef(true);
     //const navigate = useNavigate();
-
-    useEffect(() => {
-        isMounted.current = true;
-        handleGetProducts();
-
-        return () => {
-            isMounted.current = false;
-        };
-    }, []);
 
     const handleDrop = (acceptedFiles) => {
         if (acceptedFiles.length > 0) {
@@ -56,21 +45,19 @@ const ProductForm = () => {
 
     const handleRemoveImage = () => {
         setFiles(null); 
-        setImagePreview(null); 
-        setImageUrl(null); 
+        setImagePreview(null); // Restablece la vista previa
+        setImageUrl(null); // Borra la URL de la imagen
     };
 
-    /*useEffect(() => {
+    useEffect(() => {
         handleGetProducts();
-    }, [])*/
+    }, [])
 
     const handleGetProducts = () => {
         axios.get("http://127.0.0.1:8000/products")
             .then(response => {
-                if (isMounted.current) { 
-                    console.log("Traer los productos", response.data);
-                    setProducts(response.data);
-                }
+                console.log("Traer los productos", response.data);
+                setProducts(response.data);
             })
             .catch(error => {
                 console.log("Error al traer los productos", error);
@@ -104,22 +91,21 @@ const ProductForm = () => {
         setStock(product.products_stock);
         setCategory("Limpieza");
         setEditProductId(product.products_id);
-        setFiles([]); 
+        setFiles([]); // Reinicia el estado de archivos al editar
         setImagePreview(product.products_image_url);
-        setIsActive(product.products_is_active);
     };
 
     const handleSubmitProductForm = async (event) => {
         event.preventDefault();
 
         let formData = new FormData();
+        
         formData.append("products_name", name);
         formData.append("products_description", description);
         formData.append("products_price", price);
         formData.append("products_stock", stock);
         formData.append("products_category", category);
         formData.append("products_image_url", image_url);
-        formData.append("products_is_active", isActive);
 
         console.log(editProductId);
         if (editProductId) {
@@ -127,9 +113,9 @@ const ProductForm = () => {
 
             axios.put("http://127.0.0.1:8000/update/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
-                    if(isMounted.current){
-                        console.log("Producto actualizado", response);
-                        setProducts((prevProducts) => {
+                    console.log("Producto actualizado", response);
+                    // Actualiza el estado de products con el producto editado
+                    setProducts((prevProducts) => {
                         const updatedProduct = {
                             products_id: editProductId,
                             products_name: name,
@@ -137,26 +123,32 @@ const ProductForm = () => {
                             products_price: price,
                             products_stock: stock,
                             products_image_url: image_url,
-                            products_is_active: isActive,
                         };
 
                         const filteredProducts = prevProducts.filter(product => product.products_id !== editProductId);
                         return [updatedProduct, ...filteredProducts];
-                        });
-                        resetForm();
-                    } 
+                    });
+
+                    resetForm();
                 })
                 .catch(error => {
                     console.log("Error al actualizar el producto", error);
                 });
         } else {
             console.log("productos", products);
+            
+            for (let pair of formData.entries()) {
+                console.log("formadata", pair[0] + ': ' + pair[1]);
+            }
             axios.post("http://127.0.0.1:8000/insert/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
-                    if(isMounted.current){
-                        console.log("Respuesta insert product", response);
+                    console.log("Respuesta insert product", response);
+                    //console.log("Producto guardado con éxito", response);
+                    if (response && response.status === 200) {
                         resetForm();
                         setFiles([]);
+                    } else {
+                        console.error("Respuesta inesperada del servidor", response);
                     }
                 })
                 .catch(error => {
@@ -168,11 +160,8 @@ const ProductForm = () => {
     const handleDeleteClickProduct = (product) => {
         axios.delete(`http://127.0.0.1:8000/delete/products/${product.products_id}`)
             .then(response => {
-                if(isMounted.current) {
-                    console.log("handleDeleteClickProduct", response);
-                    setProducts(prevProducts => prevProducts.filter(itemProduct => itemProduct.products_id !== product.products_id));
-                }
-               
+                console.log("handleDeleteClickProduct", response);
+                setProducts(prevProducts => prevProducts.filter(itemProduct => itemProduct.products_id !== product.products_id));
             })
             .catch(error => {
                 console.log("Error al eliminar el producto", error);
@@ -187,33 +176,26 @@ const ProductForm = () => {
         setStock("");
         setCategory("Limpieza");
         setEditProductId(null);
-        setFiles([]); 
+        setFiles([]); // Reinicia el estado de archivos
         setImagePreview(null);
-        setIsActive("true");
     };
 
     const renderProducts = () => {
+        //const reversedProducts = [...products].reverse();
         if (!Array.isArray(products) || products.length === 0) {
             return <p>No hay productos disponibles.</p>;
         }
 
         return products.map(product => (
-            <div key={product.products_id} className={`products-item ${!product.products_is_active ? "inactive" : ""}`}>
+            <div key={product.products_id} className="products-item">
                 <div className="product-item-left">
                     <div className="products-name-wrapper">
                         <h2>{product.products_name}</h2>
                     </div>
                     <div className="details-wrapper">
                         <img src={product.products_image_url} alt={product.products_name} />
-                        <p><strong></strong> {product.products_price}€</p>
-                        <p><strong></strong> {product.products_stock} unidades</p>
-                        <p>
-                            <strong 
-                                style={{ color: !product.products_is_active ? 'red' : 'inherit' }}
-                            >
-                                {product.products_is_active ? "Activo" : "Inactivo"}
-                            </strong> 
-                        </p>
+                        <p><strong>Precio:</strong> {product.products_price}</p>
+                        <p><strong>Stock:</strong> {product.products_stock}</p>
                     </div>
                     
                 </div>
@@ -221,9 +203,9 @@ const ProductForm = () => {
                     <button className="action-icon" onClick={() => handleEditClickProduct(product)}>
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
-                    {/*<button className="action-icon" onClick={() => handleDeleteClickProduct(product)}>
+                    <button className="action-icon" onClick={() => handleDeleteClickProduct(product)}>
                         <FontAwesomeIcon icon={faTrash} />
-                    </button>*/}
+                    </button>
                 </div>
             </div>
         ));
@@ -246,17 +228,10 @@ const ProductForm = () => {
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
-                                <input
-                                    type="text"
-                                    name="category"
-                                    placeholder="Categoria"
-                                    value={category}
-                                    onChange={(e) => setCategory(e.target.value)}
-                                />
-                                {/*<select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
+                                <select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
                                     <option value="Limpieza">Limpieza</option>
                                     <option value="Organización">Organización</option>
-                                </select>*/}
+                                </select>
                                 <button type="button" onClick={resetForm}>
                                     <FontAwesomeIcon icon={faEraser} />
                                 </button>
@@ -284,14 +259,6 @@ const ProductForm = () => {
                                         value={stock}
                                         onChange={(e) => setStock(e.target.value)}
                                     />
-                                    <select 
-                                        name="isactive" 
-                                        value={isActive} 
-                                        onChange={(e) => setIsActive(e.target.value==="true")}
-                                    >
-                                            <option value={true}>Activo</option> 
-                                            <option value={false}>Inactivo</option>
-                                    </select>
                                 </div>
                                 <div className="image-uploaders" {...getRootProps()} style={{ border: '2px dashed #ccc',padding: '20px', textAlign: 'center' }}>
                                     <input {...getInputProps()} />

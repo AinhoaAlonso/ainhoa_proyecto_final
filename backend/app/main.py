@@ -32,10 +32,10 @@ connorders = OrdersCustomersConnections()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "http://localhost:3000/login"],  # Permitir todas las solicitudes de cualquier origen
+    allow_origins=["*", "http://localhost:3000/login"],  
     allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos los métodos (GET, POST, etc.)
-    allow_headers=["*"],  # Permitir todos los encabezados
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
 
@@ -65,6 +65,7 @@ async def insert_posts(
         await connp.insert_posts(data)
         return {"message": "Post guardado con éxito"}
     except Exception as e:
+        await connp.rollback() 
         raise HTTPException(status_code=500, detail=f"Error al insertar post: {str(e)}")
     
 @app.put("/update/posts")
@@ -89,6 +90,7 @@ async def update_posts(
         await connp.update_posts(posts_id, data)
         return {"Update Post": "Post actualizado con éxito"}
     except Exception as e:
+         await connp.rollback()
          raise HTTPException(status_code=500, detail=f"Error al actualizar post: {str(e)}")
 
 @app.delete("/delete/posts/{posts_id}")
@@ -97,6 +99,7 @@ async def delete_post(posts_id: int):
         await connp.delete_posts(posts_id)
         return {"Delete Post": "Post eliminado correctamente"}
     except Exception as e:
+        await connp.rollback()
         raise HTTPException(status_code=500, detail=f"Error al eliminar post: {str(e)}")
     
 
@@ -112,7 +115,8 @@ async def insert_products(
     products_price: float = Form(...),
     products_stock: int = Form(...),
     products_category: str = Form(...),
-    products_image_url: str = File(...)
+    products_image_url: str = File(...),
+    products_is_active: bool = File(...)
     ):
     
     data = {
@@ -122,6 +126,7 @@ async def insert_products(
         "products_stock": products_stock,
         "products_category": products_category,
         "products_image_url": products_image_url,
+        "products_is_active": products_is_active,
     }
     
     try:
@@ -138,7 +143,8 @@ async def update_product(
     products_price: float = Form(...),
     products_stock: int = Form(...),
     products_category: str = Form(...),
-    products_image_url: str = File(...)
+    products_image_url: str = File(...),
+    products_is_active: bool = File(...)
     ):
     
     data = {
@@ -148,11 +154,13 @@ async def update_product(
         "products_stock": products_stock,
         "products_category": products_category,
         "products_image_url": products_image_url,
+        "products_is_active": products_is_active,
     }
     try:
         await connproducts.update_products(products_id, data)
         return {"Update Product": "Producto actualizado con éxito"}
     except Exception as e:
+         await connproducts.rollback()
          raise HTTPException(status_code=500, detail=f"Error al actualizar el producto: {str(e)}") 
     
 @app.delete("/delete/products/{products_id}")
@@ -161,6 +169,7 @@ async def delete_product(products_id: int):
         await connproducts.delete_products(products_id)
         return {"Delete Product": "Producto eliminado correctamente"}
     except Exception as e:
+        await connproducts.rollback()
         raise HTTPException(status_code=500, detail=f"Error al eliminar producto: {str(e)}")
     
 #Ruta para verificar el token
