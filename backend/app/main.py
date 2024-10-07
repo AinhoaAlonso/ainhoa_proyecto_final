@@ -21,6 +21,7 @@ from schema.products_schema import InsertProductsSchema
 from schema.orders_schema import CreateOrderProductsSchema
 from schema.orders_schema import CreateCustomers
 from schema.orders_schema import CreateOrdersSchema
+from schema.products_schema import ProductsSchema
 
 
 app = FastAPI()
@@ -107,6 +108,14 @@ async def delete_post(posts_id: int):
 def get_products():
     products= connproducts.get_products()
     return products
+
+@app.get("/products/{products_id}")
+def get_product(products_id:int):
+    product = connproducts.get_product_id(products_id)
+
+    if product is None:  
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+    return product
 
 @app.post("/insert/products")
 async def insert_products(

@@ -21,6 +21,7 @@ import Cart from './pages/Cart';
 import Icons from './helpers/icons';
 import ProductForm from './components/products/Product_form';
 import BlogForm from './components/blog/blog_form';
+import ProductDetails from './components/products/product_details';
 
 import {ProductCategory} from './components/products/product_category';
 
@@ -32,7 +33,6 @@ class App extends Component {
         return (
             <div className='container'>
                 <div className='app-navigation-wrapper'>
-                    {/*{loggedInStatus}*/}
                     <Router>
                         <div>
                             <Routes>
@@ -78,6 +78,7 @@ class App extends Component {
                                 <Route path='/contact' element={<Contact />} />
                                 <Route path='/blog' element={<Blog />} />
                                 <Route path='/shop' element={<Shop />} />
+                                <Route path='/product/:id' element={<ProductDetails />} />
                                 <Route path='/cart' element={<Cart />} />
                                 <Route path='/category/:categoryName' element={<ProductCategory />} />
                             </Routes>

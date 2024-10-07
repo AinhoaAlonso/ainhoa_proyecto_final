@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useDropzone } from "react-dropzone"; // Importa useDropzone de react-dropzone
+import { useDropzone } from "react-dropzone"; 
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash, faEraser } from "@fortawesome/free-solid-svg-icons";
+
+
 //import { NavLink, useNavigate } from "react-router-dom";
 //import NavigationEdit from "../navigation/navigation_edit";
 
@@ -28,8 +30,13 @@ const ProductForm = () => {
         isMounted.current = true;
         handleGetProducts();
 
+        const intervalId = setInterval(() => {
+            handleGetProducts();
+        }, 5000); 
+
         return () => {
             isMounted.current = false;
+            clearInterval(intervalId);
         };
     }, []);
 
@@ -59,10 +66,6 @@ const ProductForm = () => {
         setImagePreview(null); 
         setImageUrl(null); 
     };
-
-    /*useEffect(() => {
-        handleGetProducts();
-    }, [])*/
 
     const handleGetProducts = () => {
         axios.get("http://127.0.0.1:8000/products")
@@ -102,7 +105,7 @@ const ProductForm = () => {
         setPrice(product.products_price);
         setImageUrl(product.products_image_url);
         setStock(product.products_stock);
-        setCategory("Limpieza");
+        setCategory(product.products_category);
         setEditProductId(product.products_id);
         setFiles([]); 
         setImagePreview(product.products_image_url);
@@ -185,7 +188,7 @@ const ProductForm = () => {
         setPrice("");
         setImageUrl("");
         setStock("");
-        setCategory("Limpieza");
+        setCategory("");
         setEditProductId(null);
         setFiles([]); 
         setImagePreview(null);
@@ -221,9 +224,6 @@ const ProductForm = () => {
                     <button className="action-icon" onClick={() => handleEditClickProduct(product)}>
                         <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
-                    {/*<button className="action-icon" onClick={() => handleDeleteClickProduct(product)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                    </button>*/}
                 </div>
             </div>
         ));
@@ -253,10 +253,6 @@ const ProductForm = () => {
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
                                 />
-                                {/*<select name="category" value={category} onChange={(e) => setCategory(e.target.value)}>
-                                    <option value="Limpieza">Limpieza</option>
-                                    <option value="Organización">Organización</option>
-                                </select>*/}
                                 <button type="button" onClick={resetForm}>
                                     <FontAwesomeIcon icon={faEraser} />
                                 </button>

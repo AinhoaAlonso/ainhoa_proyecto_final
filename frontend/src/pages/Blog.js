@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import NavigationContainer from "../components/navigation/navigation_container";
 import axios from "axios";
 import parse from 'html-react-parser';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowsLeftRight } from "@fortawesome/free-solid-svg-icons";
 
 
 export default class Blog extends Component{
@@ -39,11 +41,11 @@ export default class Blog extends Component{
     render(){
         console.log("Props en Blog:", this.props);
 
-        // Función para formatear la fecha a dd/mm/yyyy
+
         const formatDate = (dateString) => {
             const date = new Date(dateString);
-            const day = String(date.getDate()).padStart(2, '0'); // Asegura que el día tenga dos dígitos
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses de 0-11, así que sumamos 1
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); 
             const year = date.getFullYear();
 
             return `${day}/${month}/${year}`;
@@ -76,6 +78,9 @@ export default class Blog extends Component{
                                     </div>
                                     <div className="blog-content">
                                         <p>{parse(post.posts_content)}</p>
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon icon={faArrowsLeftRight} />
                                     </div>
                                 </div>
                             ))

@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash, faEraser } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash, faEraser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import RichEditorText from "../text_editor/rich_text_editor";
 import { NavLink } from "react-router-dom";
 import image_logo from '../../static/assets/image_logo.jpg';

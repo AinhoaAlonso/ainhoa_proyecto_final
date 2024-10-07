@@ -6,8 +6,6 @@ import axios from "axios";
 import { logout, setUserEmail } from "../reducers/authSlice"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 //import { NavLink } from "react-router-dom";
-//import ProductModal from "../components/modals/product-modal";
-//import BlogModal from "../components/modals/blog_modal";
 import NavigationEdit from "../components/navigation/navigation_edit";
 import BlogForm from "../components/blog/blog_form";
 import ProductForm from "../components/products/Product_form";
@@ -17,8 +15,6 @@ const Admin = () => {
     const dispatch = useDispatch();
     const {loggedInStatus, userRole, userEmail} = useSelector((state) => state.auth);
     const [errorMsg, setErrorMsg] = React.useState("");
-    const [isProductModalOpen, setIsProductModalOpen]= useState(false);
-    const [isBlogModalOpen, setIsBlogModalOpen]= useState(false);
     const [activeForm, setActiveForm] = useState("product");
     const navigate = useNavigate();
 
@@ -29,11 +25,9 @@ const Admin = () => {
             })
             .then(response => {
                 if (response.status === 200) {
-                    //console.log(response.data.payload);
+
                     const userRole = response.data.payload.role;
                     const userEmail = response.data.payload.sub;
-                    //console.log("Role",userRole);
-                    //console.log("Email",userEmail);
 
                     dispatch(setUserEmail(userEmail));
 
@@ -68,31 +62,6 @@ const Admin = () => {
 
     if (loggedInStatus === "NOT LOGGED IN") {
         return <Navigate to="/login" />;
-    }
-
-    const openProductModal= ()=>{
-        setIsProductModalOpen(true);
-
-    }
-    const closeProductModal = () => {
-        setIsProductModalOpen(false);
-    };
-    const openBlogModal= ()=>{
-        if(userEmail){
-            setIsBlogModalOpen(true);
-        } else{
-            console.error("User email no está");
-        };
-        
-    }
-    const closeBlogModal = () => {
-        setIsBlogModalOpen(false);
-    };
-    const openProductForm = () =>{
-        navigate('/admin/product-form');
-    }
-    const openBlogForm = () =>{
-        navigate('/admin/blog-form');
     }
 
     const handleFormChange = (form) => {

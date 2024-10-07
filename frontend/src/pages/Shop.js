@@ -6,12 +6,15 @@ import { Button, Popover, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addToCart } from "../reducers/cartSlice";
 import image_logo from '../../src/static/assets/image_logo.jpg';
+//import { Link } from "react-router-dom";
+import ProductModal from "../components/modals/product-modal";
 
 const Shop = () => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [modalProduct, setModalProduct] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null); 
     const [products, setProducts] = useState([]);
     const dispatch = useDispatch(); 
@@ -36,9 +39,8 @@ const Shop = () => {
         });
     }, []);
 
-    // Abrir el Popover
     const handlePopoverClick = (event) => {
-        setAnchorEl(anchorEl ? null : event.currentTarget); // Alternar el estado del Popover
+        setAnchorEl(anchorEl ? null : event.currentTarget); 
     };
 
     const open = Boolean(anchorEl); 
@@ -63,6 +65,16 @@ const Shop = () => {
             return total + item.products_price * item.quantity; 
         }, 0).toFixed(2); 
     };
+
+    const openProductModal= (product)=>{
+        console.log("openProductModal", product);
+        if (modalProduct) return; 
+        setModalProduct(product); 
+        
+    }
+    const closeProductModal = ()=>{
+        setModalProduct(null);
+    }
 
     return (
         <div className="shop-container">
@@ -194,31 +206,37 @@ const Shop = () => {
                 </div>   
             </div>
             <div className="product-list-wrapper">
-                {filteredProducts.map(({ products_id, products_image_url, products_name, products_price }) => (
-                    <div className="product_item" key={products_id}>
-                        {products_image_url && products_image_url.trim() !== "" ? (
-                            <img className="product-image" src={products_image_url} alt={products_name} />
-                        ) : (
-                            <div className="placeholder-image" />
-                        )}
-                        <div className="product-details-wrapper">
-                            <p className="product-name">{products_name}</p>
-                            <p className="product-price">{products_price}€</p>
+                    {filteredProducts.map((product) => (
+                        <div className="product_item" key={product.products_id}>
+                            {product.products_image_url && product.products_image_url.trim() !== "" ? (
+                                <img className="product-image" src={product.products_image_url} alt={product.products_name} />
+                            ) : (
+                                <div className="placeholder-image" />
+                            )}
+                            <div className="product-details-wrapper">
+                                <p className="product-name"
+                                    onClick={()=>openProductModal(product)}
+                                >
+                                    {product.products_name}
+                                </p>
+                                <p className="product-price">{product.products_price}€</p>
+                            </div>
+                            <div className="btn-addcart">
+                                <button 
+                                    type="submit" 
+                                    onClick={() => handleAddToCart(product)}>
+                                    Añadir
+                                </button>
+                            </div>
                         </div>
-                        <div className="btn-addcart">
-                            <button 
-                                type="submit" 
-                                onClick={() => handleAddToCart({ 
-                                    products_id, 
-                                    products_image_url, 
-                                    products_name, 
-                                    products_price 
-                                })}>
-                                Añadir
-                            </button>
-                        </div>
-                    </div>
-                ))}
+                    ))}
+                {modalProduct && (
+                <ProductModal
+                    isOpen={!!modalProduct}
+                    onRequestClose={closeProductModal}
+                    product={modalProduct}
+                />
+                )}
             </div>
         </div>
     );

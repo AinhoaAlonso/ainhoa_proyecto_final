@@ -43,6 +43,39 @@ class ProductsConnection():
             print(f"Error para mostrar los productos: {e}")
             raise HTTPException(status_code=500, detail=f"Error al mostrar los productos: {e}")
     
+    def get_product_id(self, products_id: int) -> None:
+        if self.connection is None:
+            raise Exception("Conexión a la base de datos no establecida")
+        
+        try:
+            with self.connection.cursor() as cur:
+                cur.execute("""
+                    SELECT products_id, products_name, products_description, 
+                           products_price, products_image_url, products_stock, 
+                           products_category, products_is_active
+                    FROM "products"
+                    WHERE products_id = %s
+                """, (products_id,))
+                result = cur.fetchone() 
+
+                if result:  
+                    return ProductsSchema(
+                        products_id=result[0], 
+                        products_name=result[1], 
+                        products_description=result[2], 
+                        products_price=result[3],
+                        products_image_url=result[4],
+                        products_stock=result[5], 
+                        products_category=result[6],
+                        products_is_active=result[7]
+                    )
+                else:
+                    return None  
+            
+        except Exception as e:
+            print(f"Error para mostrar el producto: {e}")
+            raise
+    
     async def save_file(self, products_image_url: UploadFile)-> str:
         print("Guardando archivo...") 
         directory = "images_uploads/products"
