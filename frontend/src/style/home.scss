@@ -1,11 +1,9 @@
 .home-container{
-
     .home-navigation-wrapper{
-
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 15px;
+        margin-top: 15px;
 
         .logo-wrapper{
             width: 100px;
@@ -28,7 +26,7 @@
                 color:$gris_antracita;
                 
                 &:hover{
-                    color:$grey;
+                    color:$gris;
                 }
             }
             .contact-wrapper{
@@ -65,13 +63,13 @@
                     opacity: 1;
                 }
                 .text-blog{
-                    position: absolute; // Posiciona el texto absolutamente
-                    top: 90%; // Centra verticalmente
-                    left: 15%; // Centra horizontalmente
-                    transform: translate(-50%, -50%); // Ajusta el texto para que esté completamente centrado
-                    color:$gris_antracita; // Color del texto
-                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); // Sombra para mejorar la legibilidad
-                    z-index: 1; // Asegúrate de que el texto esté por encima de la imagen
+                    position: absolute; 
+                    top: 90%; 
+                    left: 15%; 
+                    transform: translate(-50%, -50%); 
+                    color:$gris_antracita; 
+                    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); 
+                    z-index: 1; 
                     font-size: 1.5em;
                 }
             }

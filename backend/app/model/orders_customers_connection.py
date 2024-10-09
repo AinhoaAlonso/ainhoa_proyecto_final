@@ -1,5 +1,7 @@
 import psycopg2
 from fastapi import HTTPException
+from typing import List
+from schema.orders_schema import CreateProvinces
 
 class OrdersCustomersConnections():
     connection = None
@@ -11,7 +13,49 @@ class OrdersCustomersConnections():
         except psycopg2.OperationalError as error:
             print(error)
             self.connection.close()
-    
+
+    def get_provinces(self) -> List[CreateProvinces]:
+        if self.connection is None:
+            raise Exception("Conexión a la base de datos no establecida")
+        try:
+
+            with self.connection.cursor() as cur:
+                cur.execute(""" SELECT provinces_id, provinces_name, provinces_cod FROM "provinces";
+                """, )
+                results = cur.fetchall()
+                
+                provinces = [
+                    CreateProvinces(
+                        provinces_id=row[0],
+                        provinces_name=row[1],
+                        provinces_cod=row[2],
+                    ) for row in results
+                ]
+                return provinces
+        except Exception as e:
+            print(f"Error al mostrar las provincias: {e}")
+            raise HTTPException(status_code=500, detail=f"Error al mostrar las provincias: {e}")
+            
+    def get_customers(self, customers_email:str)-> None:
+        if self.connection is None:
+            raise Exception("Conexión a la base de datos no establecida")
+        try:
+
+            with self.connection.cursor() as cur:
+                cur.execute(""" 
+                    SELECT customers_id, customers_email 
+                    FROM "customers"
+                    WHERE customers_email= %(customers_email)s;
+                """, {"customers_email": customers_email} )
+                result = cur.fetchone()
+
+                return {"customers_id": result[0], "customers_email": result[1]}
+                
+        except Exception as e:
+            print(f"Error al traer el cliente: {e}")
+            raise HTTPException(status_code=500, detail=f"Error al traer el cliente: {e}")
+            
+
     def insert_customers(self, data:dict)->None:
         print("Insertar cliente.") 
 
@@ -22,7 +66,7 @@ class OrdersCustomersConnections():
 
             with self.connection.cursor() as cur:
                 cur.execute("""
-                    INSERT INTO "customers"(customers_name, customers_surname, customers_address_one, customers_address_two, customers_email, customers_phone) VALUES (%(customers_name)s, %(customers_surname)s, %(customers_address_one)s, %(customers_address_two)s, %(customers_email)s, %(customers_phone)s) RETURNING customers_id ;
+                    INSERT INTO "customers"(customers_name, customers_surname, customers_address_one, customers_address_two, customers_email, customers_phone, customers_provinces_cod, customers_cp) VALUES (%(customers_name)s, %(customers_surname)s, %(customers_address_one)s, %(customers_address_two)s, %(customers_email)s, %(customers_phone)s , %(customers_provinces_cod)s, %(customers_cp)s) RETURNING customers_id ;
                     
                 """, data)
 

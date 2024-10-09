@@ -20,31 +20,28 @@
                 display: flex;
                 flex-direction: column;
 
-                // Clase para alinear nombre y apellidos en fila
                 .form-data-row {
                     display: flex;
                     justify-content: space-between;
-                    gap: 10px; // Espacio entre los inputs de nombre y apellidos
+                    gap: 10px; 
 
                     .name-field, .surname-field {
                         flex: 1;
                         display: flex;
-                        flex-direction: column; // Etiqueta arriba, input abajo
+                        flex-direction: column; 
                         
-                        // Aplicamos los mismos estilos de .form-data
                         label {
                             font-weight: bold;
                             margin-bottom: 5px;
                             color: $gris;
                             
                         }
-
                         input {
                             padding: 10px;
                             border: 1px solid $verde_oscuro;
                             border-radius: 4px;
                             font-size: 16px;
-                            color: $grey;
+                            color: $gris;
 
                             &:focus {
                                 border-color: $verde_oscuro;
@@ -54,19 +51,17 @@
                     }
                 }
 
-                // Estilos para el resto de los campos
                 .form-data {
                     margin-top: 20px;
                     display: flex;
-                    flex-direction: column; // Etiquetas encima de los inputs
-
+                    flex-direction: column; 
                     label {
                         font-weight: bold;
                         margin-bottom: 5px;
                         color: $gris;
                     }
 
-                    input {
+                    input, select {
                         padding: 10px;
                         border: 1px solid $verde_oscuro;
                         border-radius: 4px;
@@ -99,25 +94,23 @@
     }
 
     .right-side-wrapper {
-        flex: 1; // Ocupa el espacio restante
-        //background-color: #F9F9F9; // Color de fondo ligero
-        border-radius: 8px; // Bordes redondeados
+        flex: 1; 
+        border-radius: 8px; 
     
         h1 {
             font-size: 24px;
             margin-bottom: 20px;
-            color:$verde_oscuro; // Verde oscuro para los encabezados
+            color:$verde_oscuro; 
         }
     
         table {
             width: 100%;
-            border-collapse: collapse; // Elimina el espacio entre celdas
+            border-collapse: collapse; 
             margin-bottom: 20px;
     
             th, td {
-                padding: 10px; // Espacio interno
-                //border: 1px solid $button; // Borde verde pastel
-                text-align: left; // Alinear texto a la izquierda
+                padding: 10px; 
+                text-align: left; 
                 color: $gris;
 
             }
@@ -127,12 +120,6 @@
     
             th {
                 background-color: $verde_claro;
-                //background-color: #E8F6E8; // Fondo verde medio para los encabezados
-                //color: white; // Texto blanco en los encabezados
-            }
-    
-            tr:nth-child(even) {
-                //background-color: #E8F6E8; // Fondo claro para filas pares
             }
         }
         .totals-wrapper{
@@ -142,9 +129,8 @@
        
             h2 {
                 font-size: 16px;
-                color: $gris; // Verde oscuro para el total
-                margin-top: 20px; // Espacio superior
-                //background-color: #E8F6E8;
+                color: $gris; 
+                margin-top: 20px; 
             }
             span{
                 color: $gris;
@@ -152,7 +138,6 @@
             }
         }
         .pay-wrapper{
-            
             .creditcard-pay, .transfer-pay{
                 display: flex;
                 justify-content: space-between;
@@ -162,9 +147,9 @@
         }
         h2 {
             font-size: 16px;
-            color: $verde_oscuro; // Verde oscuro para el total
-            margin-top: 20px; // Espacio superior
-            //background-color: #E8F6E8;
+            color: $verde_oscuro; 
+            margin-top: 20px; 
+            
         }
         label{
             font-size: 0.80em;

@@ -17,14 +17,21 @@ class CreateOrderProductsSchema(BaseModel):
     orderproducts_orders_id: int 
     orderproducts_products_id: int
 
+class CustomerResponse(BaseModel):
+    customers_id: int
+    customers_email: str
 class CreateCustomers(BaseModel):
     customers_name: str
     customers_surname: str 
     customers_address_one: str
     customers_address_two: Optional[str]
-   #customers_cp: pendiente
-   #customers_city: pendiente
-   #customers_province: pendiente
     customers_email: EmailStr
     customers_phone: str
+    customers_provinces_cod: int
+    customers_cp: str
+
+class CreateProvinces(BaseModel):
+    provinces_id:int
+    provinces_name: str
+    provinces_cod:int
 	

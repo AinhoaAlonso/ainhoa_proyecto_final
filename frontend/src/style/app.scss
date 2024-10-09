@@ -1,4 +1,3 @@
-
 .container{
     max-width: 66.4989378333em;
     padding: 0 2.617924em;
@@ -6,18 +5,11 @@
     margin-left: auto;
     margin-right: auto;
     
-    .app-navigation-wrapper{
-
-    }
     .app-page-wrapper{
         .links-images-wrapper{
             display: grid;
             grid-template-columns: 1fr 1fr;
             justify-items: center;
-            
-            .link-wrapper{
-
-            }
         }
     }
 }

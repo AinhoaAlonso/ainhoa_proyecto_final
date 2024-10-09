@@ -5,7 +5,6 @@
     height: 100vh;
 
     .blogform-navigation-wrapper{
-        background-color: white;
         padding: 20px;
     }
 
@@ -54,7 +53,6 @@
                 padding: 10px;
                 border: 1px solid $verde_claro;
                 border-radius: 4px;
-                font-size: 16px;
                 box-sizing: border-box;
                 color: $gris;
 
@@ -76,7 +74,6 @@
                     padding: 10px;
                     border: 1px solid $verde_claro;
                     border-radius: 4px;
-                    font-size: 16px;
                     box-sizing: border-box;
                     color: $gris;
 
@@ -112,25 +109,6 @@
                     }
                     .rdw-editor-main {
                         height:200px;
-                    }
-
-                }
-
-                textarea{
-                    width: 100%;
-                    padding: 10px;
-                    border: 1px solid $verde_claro;
-                    border-radius: 4px;
-                    font-size: 16px;
-                    box-sizing: border-box;
-                    margin-top: 20px;
-                    resize: vertical;
-                    height: 500px;
-                    font-family: 'Roboto', sans-serif;
-
-                    &:focus {
-                        border-color: $verde_oscuro;
-                        outline: none;
                     }
                 }
             }

@@ -1,9 +1,8 @@
 import React from 'react';
 import NavigationContainer from "../components/navigation/navigation_container";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquareXTwitter  } from '@fortawesome/free-brands-svg-icons';
-import { faSquareFacebook } from '@fortawesome/free-brands-svg-icons';
-import { faSquareInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faSquareXTwitter, faSquareFacebook, faSquareInstagram } from '@fortawesome/free-brands-svg-icons';
+import Footer from '../components/footer/footer';
 
 const Contact = () => {
     return (
@@ -43,6 +42,9 @@ const Contact = () => {
                     
                 </ul>
                 <p>Estoy disponible para ayudarte en todo lo que necesites y para aprender juntos cómo mantener el hogar más organizado. ¡Espero tu mensaje!</p>
+            </div>
+            <div className="footer-wrapper">
+                <Footer />
             </div>
         </div>
     );

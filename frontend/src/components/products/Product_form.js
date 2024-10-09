@@ -3,10 +3,7 @@ import { useDropzone } from "react-dropzone";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrash, faEraser } from "@fortawesome/free-solid-svg-icons";
-
-
-//import { NavLink, useNavigate } from "react-router-dom";
-//import NavigationEdit from "../navigation/navigation_edit";
+import Footer from "../footer/footer";
 
 import "../../../node_modules/dropzone/dist/min/dropzone.min.css";
 
@@ -24,7 +21,6 @@ const ProductForm = () => {
     const [files, setFiles] = useState([]); 
     const [imagePreview, setImagePreview] = useState(null);
     const isMounted = useRef(true);
-    //const navigate = useNavigate();
 
     useEffect(() => {
         isMounted.current = true;
@@ -62,7 +58,7 @@ const ProductForm = () => {
     });
 
     const handleRemoveImage = () => {
-        setFiles(null); 
+        setFiles([]); 
         setImagePreview(null); 
         setImageUrl(null); 
     };
@@ -71,7 +67,7 @@ const ProductForm = () => {
         axios.get("http://127.0.0.1:8000/products")
             .then(response => {
                 if (isMounted.current) { 
-                    console.log("Traer los productos", response.data);
+                    //console.log("Traer los productos", response.data);
                     setProducts(response.data);
                 }
             })
@@ -87,7 +83,7 @@ const ProductForm = () => {
 
         try {
             const response = await axios.post(`https://api.imgbb.com/1/upload?key=${apiKey}`, formData);
-            console.log("Respuesta de ImgBB:", response.data); 
+            //console.log("Respuesta de ImgBB:", response.data); 
             if (response.data && response.data.data && response.data.data.url) {
                 setImageUrl(response.data.data.url); 
             } else {
@@ -99,7 +95,7 @@ const ProductForm = () => {
     };
 
     const handleEditClickProduct = (product) => {
-        console.log("handleEditClickProduct", product);
+        //console.log("handleEditClickProduct", product);
         setName(product.products_name);
         setDescription(product.products_description);
         setPrice(product.products_price);
@@ -124,14 +120,14 @@ const ProductForm = () => {
         formData.append("products_image_url", image_url);
         formData.append("products_is_active", isActive);
 
-        console.log(editProductId);
+        //console.log(editProductId);
         if (editProductId) {
             formData.append("products_id", editProductId);
 
             axios.put("http://127.0.0.1:8000/update/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     if(isMounted.current){
-                        console.log("Producto actualizado", response);
+                        //console.log("Producto actualizado", response);
                         setProducts((prevProducts) => {
                         const updatedProduct = {
                             products_id: editProductId,
@@ -153,7 +149,7 @@ const ProductForm = () => {
                     console.log("Error al actualizar el producto", error);
                 });
         } else {
-            console.log("productos", products);
+            //console.log("productos", products);
             axios.post("http://127.0.0.1:8000/insert/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     if(isMounted.current){
@@ -168,20 +164,6 @@ const ProductForm = () => {
         }
     };
 
-    const handleDeleteClickProduct = (product) => {
-        axios.delete(`http://127.0.0.1:8000/delete/products/${product.products_id}`)
-            .then(response => {
-                if(isMounted.current) {
-                    console.log("handleDeleteClickProduct", response);
-                    setProducts(prevProducts => prevProducts.filter(itemProduct => itemProduct.products_id !== product.products_id));
-                }
-               
-            })
-            .catch(error => {
-                console.log("Error al eliminar el producto", error);
-            });
-    };
-
     const resetForm = () => {
         setName("");
         setDescription("");
@@ -192,7 +174,7 @@ const ProductForm = () => {
         setEditProductId(null);
         setFiles([]); 
         setImagePreview(null);
-        setIsActive("true");
+        setIsActive(true);
     };
 
     const renderProducts = () => {
@@ -312,7 +294,10 @@ const ProductForm = () => {
                         {renderProducts()}
                     </div>
                 </div>
-            </div> 
+            </div>
+            <div className="footer-wrapper">
+                <Footer />
+            </div>
         </div>
     );
 };

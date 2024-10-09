@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCreditCard, faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
+import { faCreditCard } from '@fortawesome/free-solid-svg-icons';
+import { faMoneyBillTransfer } from '@fortawesome/free-solid-svg-icons';
+
 
 const CustomersForm = ({ onSubmit, cartItems, total }) => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -17,10 +19,17 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
         phone: ''
     });
 
-    useEffect(() => {
-        axios.get("http://127.0.0.1:8000/provinces")
-            .then(response => setProvinces(response.data))
-            .catch(error => console.log("Error al traer las provincias", error));
+    useEffect(() =>{
+        const handleGetProvinces = async () =>{
+            axios.get("http://127.0.0.1:8000/provinces")
+            .then (response =>{
+                setProvinces(response.data);
+            })
+            .catch (error =>{
+                console.log("Error al traer las provincias", error);
+            })
+        }
+        handleGetProvinces();
     }, []);
 
     const handlePaymentChange = (event) => {
@@ -29,7 +38,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
 
     const handleInsertCustomers = (event) => {
         const { name, value } = event.target;
-        setCustomerData(prevCustomerData => ({
+        setCustomerData((prevCustomerData) => ({
             ...prevCustomerData,
             [name]: value
         }));
@@ -38,68 +47,58 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
     const handleSubmitCustomersForm = (event) => {
         event.preventDefault();
 
-        axios.get(`http://127.0.0.1:8000/customers/${customerData.email}`)
-            .then(response => {
-                const customerId = response.data.customers_id;
-                return createOrder(customerId);
-            })
-            .catch(error => {
-                if (error.response && error.response.status === 404) {
-                    return createCustomer();
-                } else {
-                    console.error("Error al verificar el cliente", error);
-                    alert('Error al procesar la compra');
-                    throw error;
-                }
-            })
-            .then(orderId => updateStockAndOrderProducts(orderId))
-            .then(() => {
-                onSubmit("Compra realizada con éxito");
-            })
-            .catch(error => {
-                console.error('Error al enviar los datos:', error);
-                alert('Error al procesar la compra');
-            });
-    };
-
-    const createCustomer = () => {
-        return axios.post("http://127.0.0.1:8000/insert/customers", {
+        console.log("Datos Cientes", customerData);
+        //Insertamos clientes y guardamos el id para meterlo en orderproducts
+        axios.post("http://127.0.0.1:8000/insert/customers",{
             customers_name: customerData.name,
             customers_surname: customerData.surname,
             customers_address_one: customerData.addressOne,
             customers_address_two: customerData.addressTwo,
             customers_email: customerData.email,
             customers_phone: customerData.phone,
-            customers_provinces_cod: customerData.province_cod,
-            customers_cp: customerData.postal_code
+            customers_provinces_cod: customerData.province_cod, 
+            customers_cp: customerData.postal_code 
         })
-        .then(response => {
+        .then(response =>{
             const customerId = response.data.customers_id;
-            return createOrder(customerId);
-        });
-    };
 
-    const createOrder = (customerId) => {
-        return axios.post("http://127.0.0.1:8000/insert/orders", {
-            orders_date: new Date().toISOString().slice(0, 10),
-            orders_total: total,
-            orders_number: `ORD-${Date.now()}`,
-            orders_customers_id: customerId
-        })
-        .then(response => response.data.orders_id);
-    };
-
-    const updateStockAndOrderProducts = (orderId) => {
-        const stockPromises = cartItems.map(item => {
-            const stockToUpdate = item.products_stock - item.quantity;
-            return axios.put(`http://127.0.0.1:8000/update/products/${item.products_id}`, null, {
-                params: { products_stock: stockToUpdate }
+            //Cuando haga eso crea inserta el pedido con el customers_id
+            return axios.post("http://127.0.0.1:8000/insert/orders",{
+                orders_date: new Date().toISOString().slice(0, 10), // Fecha actual en formato YYYY-MM-DD
+                orders_total: total,
+                orders_number: `ORD-${Date.now()}`, 
+                orders_customers_id: customerId
             });
-        });
 
-        return Promise.all(stockPromises)
-            .then(() => {
-                const productPromises = cartItems.map(item =>
+        })
+        .then(response =>{
+            const orderId = response.data.orders_id;
+
+            // Actualizamos el stock para cada producto
+            const stockPromises = cartItems.map(item => {
+                const stockToUpdate = item.products_stock - item.quantity; 
+
+                // Envio el ID del producto y tambien el stock com parametro de la consulta
+                return axios.put(`http://127.0.0.1:8000/update/products/${item.products_id}`, null, {
+                    params: {
+                        products_stock: stockToUpdate
+                    }
+                })
+                .then(stockResponse => {
+                    console.log(`Stock actualizado para el producto ID ${item.products_id}:`, stockResponse.data);
+                })
+                .catch(error => {
+                    console.error(`Error al actualizar stock para el producto ID ${item.products_id}:`, error);
+                    throw error; 
+                });
+            });
+   
+            // Ejecutar todas las solicitudes de actualización de stock en paralelo
+            return Promise.all(stockPromises)
+                .then(() => {
+
+                    //Creamos los productos del pedido para enviar a la base de datos
+                    const productPromises = cartItems.map(item =>
                     axios.post('http://127.0.0.1:8000/insert/orderproducts', {
                         orderproducts_name: item.products_name,
                         orderproducts_quantity: item.quantity,
@@ -109,9 +108,20 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
                         orderproducts_products_id: item.products_id
                     })
                 );
+                // Ejecutar todas las solicitudes de productos en paralelo
                 return Promise.all(productPromises);
-            });
+            })
+        })
+        .then(() => {
+            // Enviar los datos finales al backend si es necesario
+            onSubmit("Compra realizada con éxito");
+        })
+        .catch(error => {
+            console.error('Error al enviar los datos:', error);
+            alert('Error al procesar la compra');
+        });
     };
+
     return (
         <div className='customers-form-container'>
             <div className='left-side-wrapper'>
@@ -158,8 +168,8 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
                                 id="postal_code" 
                                 name="postal_code" 
                                 type="text" 
-                                maxLength="5" 
-                                pattern="\d{5}" 
+                                maxLength="5" // Limitar a 5 caracteres
+                                pattern="\d{5}" // Solo permitir dígitos
                                 onChange={handleInsertCustomers} 
                                 required 
                             />

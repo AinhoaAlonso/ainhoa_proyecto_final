@@ -1,14 +1,13 @@
-// src/pages/Admin.js
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate} from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import axios from "axios";
 import { logout, setUserEmail } from "../reducers/authSlice"; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { NavLink } from "react-router-dom";
 import NavigationEdit from "../components/navigation/navigation_edit";
 import BlogForm from "../components/blog/blog_form";
 import ProductForm from "../components/products/Product_form";
+import UserForm from "../components/users/user_form";
 
 
 const Admin = () => {
@@ -16,7 +15,7 @@ const Admin = () => {
     const {loggedInStatus, userRole, userEmail} = useSelector((state) => state.auth);
     const [errorMsg, setErrorMsg] = React.useState("");
     const [activeForm, setActiveForm] = useState("product");
-    const navigate = useNavigate();
+
 
     useEffect(() => {
         const verifyToken = (token) => {
@@ -81,6 +80,7 @@ const Admin = () => {
             <div className="admin-page-wrapper">
                 {activeForm === "product" && <ProductForm />}
                 {activeForm === "blog" && <BlogForm />}
+                {activeForm === "user" && <UserForm />}
             </div>
         </div>
     );

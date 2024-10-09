@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
 import image_aboutme from "../../src/static/assets/image_aboutme.jpg";
 import NavigationContainer from "../components/navigation/navigation_container";
-
+import Footer from "../components/footer/footer";
 export default class AboutMe extends Component{
     constructor(props){
         super();
@@ -49,6 +49,9 @@ export default class AboutMe extends Component{
                             </span>
                             Estoy aquí para ayudarte a lograr la paz y la claridad que mereces.</p>
                     </div>
+                </div>
+                <div className="footer-wrapper">
+                    <Footer />
                 </div>
             </div>
         );

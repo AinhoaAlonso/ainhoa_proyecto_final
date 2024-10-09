@@ -1,19 +1,19 @@
 
-// Cart.js
 import React, {useEffect, useState} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateQuantity, removeFromCart, clearCart, addToCart} from '../reducers/cartSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import CustomersModal from '../components/modals/customers_modal';
 import { FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import image_logo from '../../src/static/assets/image_logo.jpg';
+import Footer from '../components/footer/footer';
 
 const Cart = () => {
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.cartItems);
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen]= useState(false);
-    const [customerData, setCustomerData] = useState(null); // Para almacenar los datos del cliente
     const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
@@ -22,7 +22,6 @@ const Cart = () => {
             if (storedCart) {
                 const { items } = JSON.parse(storedCart);
                 items.forEach(item => {
-                    // Solo añade el producto si no está ya en el carrito
                     const existingItem = cartItems.find(cartItem => cartItem.products_id === item.products_id);
                     if (!existingItem) {
                         dispatch(addToCart(item));
@@ -34,7 +33,6 @@ const Cart = () => {
         loadCart();
     }, [dispatch, cartItems]); 
 
-    // Agrupa los productos por ID para tener una entrada única por producto
     const groupedCartItems = cartItems.reduce((acc, item) => {
         const existing = acc.find(i => i.products_id === item.products_id);
         if (existing) {
@@ -42,15 +40,13 @@ const Cart = () => {
                 i.products_id === item.products_id ? { ...i, quantity: i.quantity + item.quantity } : i
             );
         } else {
-            // Si no existe, agregar una copia del producto
             return [...acc, { ...item }];
         }
         
     }, []);
-    console.log("Cart Items", groupedCartItems);
 
     const handleQuantityChange = (products_id, quantity) => {
-        if (quantity >= 0) { // Asegurarse de que la cantidad no sea negativa
+        if (quantity >= 0) { 
             dispatch(updateQuantity({ products_id, quantity }));
         }
     };
@@ -64,8 +60,6 @@ const Cart = () => {
     };
 
     const handleCheckout = () => {
-        // Aquí puedes agregar la lógica para redirigir a la página de pago
-        // o enviar la información a tu API de FastAPI
         setIsModalOpen(true);
     };
     const handleContinueShopping = () => {
@@ -77,8 +71,8 @@ const Cart = () => {
         
     };
     const handleCustomerSubmit = (message) => {
-        setSuccessMessage(message); // Almacena el mensaje de éxito en el estado
-        handleClearCart(); // Vacía el carrito después de que se procesa la compra
+        setSuccessMessage(message); 
+        handleClearCart(); 
         closeModal(); 
     };
  
@@ -90,7 +84,12 @@ const Cart = () => {
         <div className='cart-container'>
             <div className='nav-cart-wrapper'>
                 <div className='nav-logo'>
-                    <h1>Aqui va el logo</h1>
+                    <NavLink to="/shop" className="active">
+                        <img src={image_logo} alt="Logo" />
+                    </NavLink>
+                </div>
+                <div className="nav-shop-title">
+                    <h1>Shop</h1>
                 </div>
             </div>
             <div className='cartitems-wrapper'>
@@ -147,10 +146,13 @@ const Cart = () => {
                     <CustomersModal 
                         isOpen={isModalOpen} 
                         onRequestClose={closeModal}
-                        onSubmit={handleCustomerSubmit} // Pasa la función para manejar el submit
-                        cartItems={groupedCartItems} // Pasar los productos del carrito al modal
-                        total={getTotal().toFixed(2)} // Pasar el total del carrito al modal
+                        onSubmit={handleCustomerSubmit} 
+                        cartItems={groupedCartItems} 
+                        total={getTotal().toFixed(2)} 
                     />
+            </div>
+            <div className="footer-wrapper">
+                <Footer />
             </div>
         </div>
     );

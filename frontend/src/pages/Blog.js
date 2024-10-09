@@ -4,6 +4,7 @@ import axios from "axios";
 import parse from 'html-react-parser';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowsLeftRight } from "@fortawesome/free-solid-svg-icons";
+import Footer from "../components/footer/footer";
 
 
 export default class Blog extends Component{
@@ -29,7 +30,6 @@ export default class Blog extends Component{
                 posts:response.data
             }, () =>{
                 console.log(" Posts desde get",this.state.posts);
-                //this.props.getPosts(this.state.posts);
             });
             return response.data;
         })
@@ -55,9 +55,6 @@ export default class Blog extends Component{
             <div className="blog-container">
                 <NavigationContainer />
                 <div className="blog-wrapper">
-                    <div className="title-blog-wrapper">
-                        <h1>Posts</h1>
-                    </div>
                     <div className="page-blog-wrapper">
                         {this.state.posts.length > 0 ? (
                             this.state.posts.map(post => (
@@ -66,7 +63,7 @@ export default class Blog extends Component{
                                         <h2>{post.posts_title}</h2>
                                     </div>
                                     <div className="blog-image">
-                                        <img src={post.posts_image_url} />
+                                        <img src={post.posts_image_url} alt={post.posts_title} />
                                     </div>
                                     <div className="blog-row-wrapper">
                                         <div className="blog-date">
@@ -79,7 +76,7 @@ export default class Blog extends Component{
                                     <div className="blog-content">
                                         <p>{parse(post.posts_content)}</p>
                                     </div>
-                                    <div>
+                                    <div className="arrow">
                                         <FontAwesomeIcon icon={faArrowsLeftRight} />
                                     </div>
                                 </div>
@@ -89,7 +86,9 @@ export default class Blog extends Component{
                         )}
                     </div>
                 </div>
-
+                <div className="footer-wrapper">
+                    <Footer />
+                </div>
             </div>
         );
     }

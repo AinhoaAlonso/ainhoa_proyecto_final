@@ -6,8 +6,8 @@ import { Button, Popover, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { addToCart } from "../reducers/cartSlice";
 import image_logo from '../../src/static/assets/image_logo.jpg';
-//import { Link } from "react-router-dom";
 import ProductModal from "../components/modals/product-modal";
+import Footer from "../components/footer/footer";
 
 const Shop = () => {
     const [categories, setCategories] = useState([]);
@@ -220,6 +220,7 @@ const Shop = () => {
                                     {product.products_name}
                                 </p>
                                 <p className="product-price">{product.products_price}€</p>
+                                <p className="stock">Stock {product.products_stock}</p>
                             </div>
                             <div className="btn-addcart">
                                 <button 
@@ -237,6 +238,9 @@ const Shop = () => {
                     product={modalProduct}
                 />
                 )}
+            </div>
+            <div className="footer-wrapper">
+                <Footer />
             </div>
         </div>
     );

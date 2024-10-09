@@ -1,7 +1,6 @@
-// src/pages/Login.js
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { loginUser } from "../reducers/authSlice"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -17,30 +16,23 @@ const Login = () => {
 
 
     useEffect(() => {
-        const token = localStorage.getItem("access_token"); // Verifica si hay token en localStorage
-        if (token && loggedInStatus === "LOGGED_IN" && userRole === "admin") {
-            navigate("/admin");
+        const token = localStorage.getItem("access_token"); 
+    
+        if (loggedInStatus === "LOGGED_IN") {
+            if (userRole === "admin" || token) {
+                const timer = setTimeout(() => {
+                    navigate('/admin');
+                }, 2000);
+                
+                return () => clearTimeout(timer);
+            }
         }
-    },[loggedInStatus, userRole, navigate]);
-
-    useEffect(() => {
-        
+    
         if (errorMsg) {
             setLocalErrorMsg(errorMsg);
         }
-    }, [errorMsg]);
-
-    useEffect(() => {
-        if (loggedInStatus === "LOGGED_IN") {
-            const timer = setTimeout(() => {
-                navigate('/admin');
-            }, 2000); // Espera de 2 segundos
+    }, [loggedInStatus, userRole, navigate, errorMsg]);
     
-            return () => clearTimeout(timer); // Limpia el temporizador si el componente se desmonta
-        }
-    }, [loggedInStatus]);
-    
-
     const handleSubmitLogin = (event) => {
         event.preventDefault();
         dispatch(loginUser({ email, password })).unwrap()
@@ -56,10 +48,6 @@ const Login = () => {
 
     const goToHome =()=>{
         navigate("/");
-    }
-
-    if (loggedInStatus === "LOGGED_IN" && userRole === "admin") {
-        return <Navigate to="/admin" replace />;
     }
 
     return (

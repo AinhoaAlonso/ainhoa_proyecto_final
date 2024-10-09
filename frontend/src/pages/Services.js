@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import NavigationContainer from "../components/navigation/navigation_container";
 import { NavLink } from "react-router-dom";
+import Footer from "../components/footer/footer";
 
 export default class Services extends Component{
-    constructor(props){
-        super();
-
-    }
     render(){
         return (
             <div className="services-container">
@@ -15,7 +12,7 @@ export default class Services extends Component{
                     A continuación, te detallo los servicios de organización y limpieza que ofrezco, junto con sus tarifas. Para más información o para solicitar un servicio, no dudes en 
                     <NavLink to="/contact" className="contact-link"> contactarme aquí</NavLink> o envíame un correo a&nbsp;  
                      <span style={{textDecoration:"none", color:"#9BC5A4", fontWeight:"bold"}}>
-                    contacto@miempresa.com.
+                     holaorganizacion@gmail.com.
                     </span>
                 </p>
 
@@ -53,6 +50,9 @@ export default class Services extends Component{
                     <p>
                         ¿Listo para transformar tu espacio? <NavLink to="/contact" className="contact-link"><span style={{ color: "#9BC5A4", fontWeight: "bold" }}>¡Contáctame!</span></NavLink> y empezamos a trabajar en tu proyecto.
                     </p>
+                </div>
+                <div className="footer-wrapper">
+                    <Footer />
                 </div>
             </div>
         );

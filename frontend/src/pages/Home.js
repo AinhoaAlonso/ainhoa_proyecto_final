@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Navigate } from "react-router-dom";
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-//import { faUser } from "@fortawesome/free-solid-svg-icons";
+import Footer from "../components/footer/footer";
+
 
 
 import blog_image from '../../src/static/assets/blog_image.jpg';
@@ -55,7 +56,6 @@ export default class Home extends Component{
                         </div>
                         <div className="icon-login-wrapper">
                             <FontAwesomeIcon icon="fa-solid fa-user-lock" onClick={this.handleSubmitLogin} alt="Iniciar Sesión"/>
-                            {/*<button type="submit" onClick={this.handleSubmitLogin}>Iniciar Sesión</button>*/}
                         </div>
                     </div>
                 </div>
@@ -78,6 +78,9 @@ export default class Home extends Component{
                             </NavLink>
                         </div>
                     </div>
+                </div>
+                <div className="footer-wrapper">
+                    <Footer />
                 </div>
             </div>
         );

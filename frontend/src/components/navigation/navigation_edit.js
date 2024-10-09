@@ -41,20 +41,19 @@ const NavigationEdit = ({ activeForm, onFormChange }) => {
                 >
                     Formulario Blog
                 </div>
-                <div className='up-nav-link-side'>
-                    {/*<NavLink to="/about-me" className={({ isActive }) => isActive ? "active" : ""}>
-                    Sobre mí
-                    </NavLink>*/}
-                </div>
-                <div className='up-nav-link-side'>
-                    {/*<NavLink to="/services" className={({ isActive }) => isActive ? "active" : ""}>
-                        Servicios y Tarifas
-                    </NavLink>*/}
-                </div>
-                <div className='up-nav-link-side'>
-                    {/*<NavLink to="/contact" className={({ isActive }) => isActive ? "active" : ""}>
-                        Contacto
-                    </NavLink>*/}
+                <div className={`up-nav-link-side ${activeForm === "user" ? "active" : ""}`}
+                    style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#6d6d6d',
+                        textDecoration: 'none',
+                        cursor: 'pointer',
+                        padding: '0',
+                        fontSize: '16px',  
+                    }}
+                    onClick={() => onFormChange("user")}
+                >
+                    Usuarios
                 </div>
             </div>
         </div>

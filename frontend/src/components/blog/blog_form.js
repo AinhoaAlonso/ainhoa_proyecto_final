@@ -3,11 +3,9 @@ import { useDropzone } from 'react-dropzone';
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash, faEraser, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faTrash, faEraser} from "@fortawesome/free-solid-svg-icons";
 import RichEditorText from "../text_editor/rich_text_editor";
-import { NavLink } from "react-router-dom";
-import image_logo from '../../static/assets/image_logo.jpg';
-import NavigationEdit from "../navigation/navigation_edit";
+import Footer from "../footer/footer";
 
 import "../../../node_modules/react-dropzone-component/styles/filepicker.css";
 import "../../../node_modules/dropzone/dist/min/dropzone.min.css";
@@ -26,17 +24,8 @@ const BlogForm = () => {
     const [imagePreview, setImagePreview] = useState(null);
     const imageRef = useRef(null);
 
-    const [isMounted, setIsMounted] = useState(false); 
 
     const userEmail = useSelector(state=>state.auth.userEmail);
-
-    useEffect(() => {
-        setIsMounted(true); 
-
-        return () => {
-            setIsMounted(false);  
-        };
-    }, []);
    
     const handleDrop = (acceptedFiles) => {
         if (acceptedFiles.length > 0) {
@@ -61,36 +50,34 @@ const BlogForm = () => {
     });
 
     const handleRemoveImage = () => {
-        setFiles(null); 
+        setFiles([]); 
         setImagePreview(null); 
         setImageUrl(null); 
     };
 
     useEffect(() => {
 
-        if (!userEmail || !isMounted) return;
+        if (!userEmail) return;
         axios.get("http://127.0.0.1:8000/users")
             .then(response => {
                 const user = response.data.find(user => user.users_email === userEmail);
-                if (user && isMounted) {
+                if (user) {
                     setUsersId(user.users_id);
                 }
             })
             .catch(error => {
                 console.log("Error fetching users", error);
             });
-            if (isMounted) {
-                handleGetPosts();
-            }
-    }, [userEmail, isMounted]);
+
+            handleGetPosts();
+
+    }, [userEmail]);
 
     const handleGetPosts = async () => {
-        if (!isMounted) return;
+
         await axios.get("http://127.0.0.1:8000/posts")
             .then(response => {
-                if (isMounted) {
-                    setPosts(response.data || []);
-                }
+                setPosts(response.data || []);
             })
             .catch(error => {
                 console.log("Error fetching posts", error);
@@ -145,7 +132,7 @@ const BlogForm = () => {
                 headers: { "Content-Type": "multipart/form-data" }
             })
                 .then(response => {
-                    console.log("Producto actualizado", response);
+                    //console.log("Producto actualizado", response);
                     setPosts((prevPosts) => {
                         const updatedPost = {
                             posts_id: editPostId,
@@ -182,7 +169,7 @@ const BlogForm = () => {
     };
 
     const handleEditClick = (post) => {
-        console.log("handleEditClick", post);
+        //console.log("handleEditClick", post);
         setTitle(post.posts_title);
         setAuthor(post.posts_author);
         setDate(post.posts_date);
@@ -247,11 +234,6 @@ const BlogForm = () => {
 
     return (
         <div className="blogform-container">
-            {/*<div className="blogform-navigation-wrapper">
-                <div className="logo">
-                    <NavigationEdit />
-                </div>
-            </div>*/}
             <div className="blogform-wrapper">
                 <div className="blogform-left-side-wrapper">
                     <h1>{editPostId ? "Editar Post" : "Nuevo Post"}</h1>
@@ -311,6 +293,9 @@ const BlogForm = () => {
                         {renderPosts()}
                     </div>
                 </div>
+            </div>
+            <div className="footer-wrapper">
+                <Footer />
             </div>
         </div>
     );

@@ -1,19 +1,16 @@
 import React, {useEffect, useState} from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Shop from "../../pages/Shop";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../reducers/cartSlice";
-import { v4 as uuidv4 } from 'uuid';
 
 
 export const ProductCategory=()=>{
-    const { categoryName } = useParams(); // Obtener el nombre de la categoría desde la URL
+    const { categoryName } = useParams(); 
     const [products, setProducts] = useState([]);
-    const navigate = useNavigate();
-    const dispatch = useDispatch(); // Crear la función para despachar acciones de Redux
-    const cartItems = useSelector((state) => state.cart.cartItems); // Obtener los productos del carrito desde el store de Redux
-    const [anchorEl, setAnchorEl] = useState(null); // Estado para el popover
+    const dispatch = useDispatch(); 
+    const cartItems = useSelector((state) => state.cart.cartItems); 
 
     
     useEffect(()=>{
@@ -28,18 +25,8 @@ export const ProductCategory=()=>{
         })
     }, [categoryName]);
 
-    
-
     const handleAddToCart = (product) => {
-        //console.log('Adding product to cart:', product);
-        // Genera un ID único y añade al producto antes de despachar
-        /*const uniqueProduct = { 
-            ...product, 
-            unique_id: product.unique_id || uuidv4(),
-            quantity: 1 };
-        //console.log('Adding product to cart:', product);*/
         dispatch(addToCart(product));
-        //navigate('/cart'); // Redirigir a la página de carrito
     };
 
     return (

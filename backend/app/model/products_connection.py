@@ -40,7 +40,7 @@ class ProductsConnection():
                 return products
             
         except Exception as e:
-            print(f"Error para mostrar los productos: {e}")
+            print(f"Error al mostrar los productos: {e}")
             raise HTTPException(status_code=500, detail=f"Error al mostrar los productos: {e}")
     
     def get_product_id(self, products_id: int) -> None:
@@ -122,6 +122,24 @@ class ProductsConnection():
             self.connection.rollback()
             print(f"Error al actualizar el producto: {e}")
             raise HTTPException(status_code=500, detail="Error al actualizar el producto.")
+    
+    async def update_products_stock(self, products_id:int, products_stock:int) -> None:
+        try:
+            print(f"Actualizando el stock del producto {products_id} a {products_stock}.")
+            with self.connection.cursor() as cur:
+                cur.execute(sql.SQL("""
+                    UPDATE "products" SET products_stock=%(products_stock)s WHERE products_id = %(products_id)s;
+                """), {"products_stock": products_stock, "products_id": products_id})
+
+                if cur.rowcount == 0:
+                    raise HTTPException(status_code=404, detail="Producto no encontrado.")
+
+                self.connection.commit()
+                print("Stock actualizado correctamente.")
+        except Exception as e:
+            self.connection.rollback()
+            print(f"Error al actualizar el stock: {e}")
+            raise HTTPException(status_code=500, detail="Error al actualizar el stock.")
         
     async def delete_products(self, products_id:int)-> None:
         try:

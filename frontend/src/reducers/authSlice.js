@@ -1,4 +1,3 @@
-
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -54,14 +53,14 @@ const authSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loginUser.fulfilled, (state, action) => {
-                console.log("Login, role:", action.payload.users_role);
-                console.log("Email del usuario:", action.payload.users_email);
-                if (action.payload.users_role === 'admin') {
+                if (action.payload.users_role === 'admin' && action.payload.users_is_active) {
                     state.loggedInStatus = "LOGGED_IN";
                     state.userRole = 'admin';
                     state.userEmail = action.payload.users_email; 
                     state.errorMsg = null;
-                } else {
+                } else if (!action.payload.users_is_active) {
+                    state.errorMsg = "Usuario inactivo. No se permite el acceso";
+                } else{
                     state.errorMsg = "Acceso denegado: NO eres administrador";
                 }
             })

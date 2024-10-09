@@ -1,9 +1,11 @@
+import bcrypt
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, status, Depends
 from typing import List, Optional
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordBearer
 from datetime import date
+
 
 from model.users_connection import UsersConnection
 from model.posts_connection import PostsConnection
@@ -22,6 +24,7 @@ from schema.orders_schema import CreateOrderProductsSchema
 from schema.orders_schema import CreateCustomers
 from schema.orders_schema import CreateOrdersSchema
 from schema.products_schema import ProductsSchema
+from schema.orders_schema import CustomerResponse
 
 
 app = FastAPI()
@@ -171,12 +174,21 @@ async def update_product(
     except Exception as e:
          await connproducts.rollback()
          raise HTTPException(status_code=500, detail=f"Error al actualizar el producto: {str(e)}") 
+
+@app.put("/update/products/{products_id}")
+async def update_stock(products_id:int, products_stock:int):
+    try:
+        await connproducts.update_products_stock(products_id, products_stock)
+        return {"Stock actualizado"}
+    except Exception as e:
+        await connproducts.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al actualizar el stock: {str(e)}")
     
 @app.delete("/delete/products/{products_id}")
 async def delete_product(products_id: int):
     try:
         await connproducts.delete_products(products_id)
-        return {"Delete Product": "Producto eliminado correctamente"}
+        return {"Producto eliminado correctamente"}
     except Exception as e:
         await connproducts.rollback()
         raise HTTPException(status_code=500, detail=f"Error al eliminar producto: {str(e)}")
@@ -196,7 +208,8 @@ def login(request: LoginSchema):
             users_id=user.users_id,
             users_email=user.users_email,
             users_role=user.users_role,
-            access_token=access_token
+            users_is_active=user.users_is_active,
+            access_token=access_token,
         )
     else:
         raise HTTPException(
@@ -204,6 +217,16 @@ def login(request: LoginSchema):
             detail="Invalid credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    
+@app.get("/provinces")
+def show_provinces():
+    provinces = connorders.get_provinces()
+    return provinces
+
+@app.get("/customers/{customers_email}", response_model=CustomerResponse)
+def show_customer(customers_email:str):
+    customer = connorders.get_customers(customers_email)
+    return customer
 
 @app.post("/insert/customers")
 def customers_insert(customers_data: CreateCustomers):
@@ -248,8 +271,72 @@ def show_users():
     return users
 
 
-@app.post("/user/insert")
-def users_insert(users_data:CreateUsersSchema):
-    data = users_data.model_dump()
-    conn.write(data)
+@app.post("/insert/user")
+async def insert_users(
+    users_name: str = Form(...),
+    users_lastname_one: str = Form(...),
+    users_lastname_two: str = Form(...),
+    users_email: str = Form(...),
+    users_password: str = Form(...),
+    users_role: str = File(...),
+    users_is_active: bool = File(...)
+    ):
+    data = {
+        "users_name": users_name,
+        "users_lastname_one": users_lastname_one,
+        "users_lastname_two": users_lastname_two,
+        "users_email": users_email,
+        "users_password": users_password,
+        "users_role": users_role,
+        "users_is_active": users_is_active,
+    }
+    
+    try:
+        await conn.insert_user(data)
+        return {"message": "Producto guardado con éxito"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al insertar producto: {str(e)}")
+    
+@app.put("/update/users")
+async def update_user(
+    users_id: int = Form(...),
+    users_name: str = Form(...),
+    users_lastname_one: str = Form(...),
+    users_lastname_two: str = Form(...),
+    users_email: str = Form(...),
+    users_password: Optional[str] = Form(None),
+    users_role: str = Form(...),
+    users_is_active: bool = Form(...)
+    ):
+ 
+    user = conn.show_userId(users_id= users_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+
+
+    if users_password:
+         # Hashear la contraseña
+            hashed_password = bcrypt.hashpw(users_password.encode('utf-8'), bcrypt.gensalt())
+            # Almacena el hash como cadena
+            hashed_password_str= hashed_password.decode('utf-8')
+    else:
+        hashed_password_str = user["users_password"]  # Mantén la contraseña actual
+
+    data = {
+        "users_id": users_id,
+        "users_name": users_name,
+        "users_lastname_one": users_lastname_one,
+        "users_lastname_two": users_lastname_two,
+        "users_email": users_email,
+        "users_password": hashed_password_str,
+        "users_role": users_role,
+        "users_is_active": users_is_active,
+    }
+    try:
+        print("Datos que se van a actualizar:", data)
+        await conn.update_users(users_id, data)
+        return {"Users actualizado": "Usuario actualizado con éxito"}
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al actualizar el usuario: {str(e)}") 
 

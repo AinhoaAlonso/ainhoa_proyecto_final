@@ -81,7 +81,7 @@
                 button{
                     margin-top: 0px;
                     margin-top: 0px;
-                    border: 1px solid #C6EBC3;
+                    border: 1px solid $verde_claro;
                     font-size: 16px;
                     background: white;
                 }
@@ -103,7 +103,7 @@
                     border: 1px solid $verde_claro;
                     border-radius: 4px;
                     box-sizing: border-box; 
-                    margin-top: 20px;
+                    margin-top: 0px;
                     color: $gris;
 
                     &:focus {
@@ -116,6 +116,8 @@
                     resize: vertical; 
                     height: 100px; 
                     font-family: 'Roboto', sans-serif;
+                    margin-bottom: 10px;
+                    margin-top: 10px;
                 }
                 .form-number-wrapper{
                     display: flex;

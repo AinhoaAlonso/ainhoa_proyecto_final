@@ -11,7 +11,7 @@ import Login from './pages/Login';
 import Admin from './pages/Admin';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
-import UserData from './pages/UserData';
+import UserForm from './components/users/user_form';
 import Register from './pages/Register';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
@@ -22,13 +22,14 @@ import Icons from './helpers/icons';
 import ProductForm from './components/products/Product_form';
 import BlogForm from './components/blog/blog_form';
 import ProductDetails from './components/products/product_details';
-
 import {ProductCategory} from './components/products/product_category';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
 
 class App extends Component {
     render() {
         Icons();
-        const { loggedInStatus, userRole } = this.props; // Obtén el estado de Redux
+        const { loggedInStatus, userRole } = this.props; 
 
         return (
             <div className='container'>
@@ -71,7 +72,16 @@ class App extends Component {
                                         )
                                     }
                                 />
-                                <Route path='/userdata' element={<UserData />} />
+                                <Route 
+                                    path='/admin/user-form' 
+                                    element={
+                                        loggedInStatus === "LOGGED_IN" ? (
+                                            <UserForm />
+                                        ) : (
+                                            <Navigate to="/login" />
+                                        )
+                                    }
+                                />
                                 <Route path='/register' element={<Register />} />
                                 <Route path='/about-me' element={<AboutMe />} />
                                 <Route path='/services' element={<Services />} />
@@ -81,6 +91,8 @@ class App extends Component {
                                 <Route path='/product/:id' element={<ProductDetails />} />
                                 <Route path='/cart' element={<Cart />} />
                                 <Route path='/category/:categoryName' element={<ProductCategory />} />
+                                <Route path='/politicadeprivacidad' element={<PrivacyPolicy />} />
+                                <Route path='/terminosycondiciones' element={<Terms />} />
                             </Routes>
                         </div>
                         <div className='app-page-wrapper'>
