@@ -1,42 +1,43 @@
-.nav-container{
+.nav-container {
     max-width: 1200px; 
     margin: 0 auto; 
-    padding: 20px; 
+    padding: 20px 0; 
     align-items: center; 
-    padding: 10px 0; 
     border-bottom: 1px solid $verde_oscuro; 
 
-    .up-nav-left-wrapper h1{
-        font-size: 24px; 
-        color: #4A4A4A; 
-        width: 150px;
-        height: 150px;
-
-        
-    }
-    .up-nav-left-wrapper{
-        width: 100px;
+   
+    .up-nav-left-wrapper {
+        display: flex;  
+        align-items: center;  
+        width: 100px; 
         height: 100px;
 
-        img{
+        h1 {
+            font-size: 24px; 
+            color: #4A4A4A; 
+            width: 150px;  
+            height: 150px;
+        }
+
+        img {
             width: 100%;
             height: auto;
         } 
+
+        .active {
+            text-decoration: none; 
+        }
     }
 
-    .up-nav-left-wrapper .active{
-        text-decoration: none;
-    }
-    .up-nav-right-wrapper{
+    .up-nav-right-wrapper {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;  
         align-items: center;
         width: 100%;
         text-align: center;
         gap: 30px;
 
-
-        .up-nav-link-side{
+        .up-nav-link-side {
             margin-left: 20px; 
         }
 
@@ -46,8 +47,54 @@
         }
     }
 }
+
+
 .nav-container .active {
     color: #9BC5A4; 
     font-weight: bold; 
+}
 
+
+@media (max-width: 1024px) {
+    .nav-container {
+        padding: 15px 0; 
+    }
+
+    .up-nav-left-wrapper {
+        width: 80px; 
+        height: 80px; 
+        
+        h1 {
+            font-size: 20px; 
+            width: 120px; 
+            height: 120px; 
+        }
+    }
+
+    .up-nav-right-wrapper {
+        gap: 20px; 
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        padding: 10px 0; 
+    }
+
+    .up-nav-left-wrapper {
+        flex-direction: column; 
+        align-items: flex-start; 
+        
+        h1 {
+            font-size: 18px; 
+            width: auto; 
+            height: auto; 
+        }
+    }
+
+    .up-nav-right-wrapper {
+        justify-content: center; 
+        flex-wrap: wrap; 
+        gap: 15px;
+    }
 }

@@ -1,5 +1,6 @@
 .shop-container {
     display: flex;
+    flex-wrap: wrap;
     flex-direction: column;
     min-height: 100vh; 
     font-family: 'Roboto', sans-serif;
@@ -167,3 +168,81 @@
     }
 }
 
+
+@media (max-width: 1024px) {
+    .up-nav-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 15px;
+    }
+
+    .up-nav-left-wrapper {
+        flex-direction: row !important;
+        width: 100px;
+        height: 100px;
+
+        img {
+            width: 100px !important;
+            height: 100px !important;
+        }
+    }
+
+    .shop-title h1 {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 768px) {
+    .up-nav-wrapper {
+        flex-direction: column;
+        //align-items: center;
+        padding: 10px;
+    }
+
+    .up-nav-left-wrapper h1 {
+        font-size: 1.5em;
+    }
+
+    .product_item {
+        width: 100%;
+    }
+
+    .product-list-wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .categories-wrapper {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .category {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
+
+    .up-nav-right-wrapper {
+        gap: 15px;
+        //flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-title h1 {
+        font-size: 1.2em;
+    }
+
+    .category {
+        font-size: 0.8em;
+        padding: 5px 10px;
+    }
+
+    .product-details-wrapper .product-name {
+        font-size: 0.9em;
+    }
+
+    .product-details-wrapper .product-price {
+        font-size: 0.8em;
+    }
+}
