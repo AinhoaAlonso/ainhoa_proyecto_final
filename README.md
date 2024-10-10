@@ -29,12 +29,13 @@ Instrucciones paso a paso sobre cómo instalar y ejecutar el proyecto:
 1. Clona el repositorio:
    ```bash
    git clone https://github.com/tu_usuario/nombre_del_proyecto.git
+   ```
 
 2. Navega al directorio del proyecto:
 
   ```bash
-  Copiar código
   cd nombre_del_proyecto
+   ```
 
 3. Backend: Accede al directorio del backend e instala las dependencias:
 
