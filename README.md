@@ -32,40 +32,37 @@ Instrucciones paso a paso sobre cómo instalar y ejecutar el proyecto:
    ```
 
 2. Navega al directorio del proyecto:
-
-  ```bash
-  cd nombre_del_proyecto
+   ```bash
+   cd nombre_del_proyecto
    ```
 
 3. Backend: Accede al directorio del backend e instala las dependencias:
-
-  ```bash
-  Copiar código
-  cd backend
-  pip install -r requirements.txt
+   ```bash
+   cd backend
+   pip install -r requirements.txt
+   ```
 
 4.Configura la base de datos PostgreSQL:
+  
+      Crea la base de datos necesaria y ajusta la configuración de conexión en el archivo de configuración.
 
-  Crea la base de datos necesaria y ajusta la configuración de conexión en el archivo de configuración.
-
-5.Frontend: Accede al directorio del frontend e instala las dependencias:
-
-  ```bash
-  Copiar código
-  cd ../frontend
-  npm install
-
+5. Frontend: Accede al directorio del frontend e instala las dependencias:
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+   
 6.Ejecuta el backend y el frontend:
-
-    Para el backend:
-    bash
-    Copiar código
-    uvicorn main:app --reload
-
-    Para el frontend:
-    bash
-    Copiar código
-    npm start
+   
+   Para el backend:
+      ```bash
+      uvicorn main:app --reload
+      ```
+   
+   Para el frontend:
+      ```bash
+      npm start
+      ```
 ## Uso
 Abre tu navegador y visita http://localhost:3000 para acceder al blog.
 Los usuarios pueden explorar las publicaciones y la tienda.
