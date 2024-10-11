@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 from fastapi import UploadFile, File, HTTPException
 import psycopg2
 from psycopg2 import sql
@@ -6,12 +7,14 @@ from typing import List
 #from fastapi import HTTPException
 from schema.products_schema import ProductsSchema
 
+load_dotenv()
+
 class ProductsConnection():
     connection:True
 
     def __init__(self):
         try:
-            self.connection = psycopg2.connect("dbname=blog_db user=postgres password=Ainhoa88 host=localhost port=5432")
+            self.connection = psycopg2.connect(os.getenv("DATABASE_URL"))
             print("Conexión establecida correctamente")
         except psycopg2.OperationalError as error:
             print(f"Error en la conexion: {error}")

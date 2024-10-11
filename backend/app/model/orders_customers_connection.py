@@ -1,15 +1,18 @@
+import os
 import psycopg2
 from fastapi import HTTPException
 from typing import List
+from dotenv import load_dotenv
 from schema.orders_schema import CreateProvinces
 
+load_dotenv()
 class OrdersCustomersConnections():
     connection = None
     # Funcion constructora, se va a llamar siempre que se cre una instancia de esta clase.
     # De momento que intente pasar, excepto si da un error en la operacion de conectarse
     def __init__(self):
         try:
-            self.connection = psycopg2.connect("dbname=blog_db user=postgres password=Ainhoa88 host=localhost port=5432")
+            self.connection = psycopg2.connect(os.getenv("DATABASE_URL"))
         except psycopg2.OperationalError as error:
             print(error)
             self.connection.close()

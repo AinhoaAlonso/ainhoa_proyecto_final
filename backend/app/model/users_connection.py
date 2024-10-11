@@ -1,3 +1,5 @@
+import os
+from dotenv import load_dotenv
 import psycopg2
 import bcrypt
 from fastapi import HTTPException
@@ -5,11 +7,13 @@ from fastapi import HTTPException
 from typing import List, Optional
 from schema.users_schema import ResponseUsersSchema
 
+load_dotenv()
+
 class UsersConnection():
     connection = None
     def __init__(self):
         try:
-            self.connection = psycopg2.connect("dbname=blog_db user=postgres password=Ainhoa88 host=localhost port=5432")
+            self.connection = psycopg2.connect(os.getenv("DATABASE_URL"))
         except psycopg2.OperationalError as error:
             print(error)
             self.connection.close()
