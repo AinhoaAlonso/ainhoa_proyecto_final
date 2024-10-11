@@ -96,7 +96,6 @@ class App extends Component {
                             </Routes>
                         </div>
                         <div className='app-page-wrapper'>
-                            {/* Contenido adicional aquí */}
                         </div>
                     </Router>
                 </div>

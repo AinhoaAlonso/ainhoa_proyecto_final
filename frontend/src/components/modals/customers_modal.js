@@ -6,7 +6,6 @@ export default class CustomersModal extends Component{
     constructor(props){
         super(props);
 
-        //Vamos a aplicar los estilos en línea para que prevalezcan a los que tiene por defecto el react-modal
         this.customStyles = {
             content : {
                 fontFamily: "Roboto, sans-serif",
@@ -23,25 +22,25 @@ export default class CustomersModal extends Component{
                 padding: "20px", 
                 bottom: "auto", 
             },
-            //Efecto de superposición,oscurece lo de abajo cuando se abre, color negro pero un poco transparente(0.75)
+            
             overlay:{
                 backgroundColor: "rgba(0, 0, 0, 0.75)"
             }
         };
     };
     render(){
-        const { isOpen, onRequestClose, onSubmit, cartItems, total } = this.props; // Recibe la prop para controlar la apertura
+        const { isOpen, onRequestClose, onSubmit, cartItems, total } = this.props; 
         return(
             <ReactModal
                 style={this.customStyles}
                 isOpen={isOpen} 
-                onRequestClose={onRequestClose} // Para cerrar el modal
+                onRequestClose={onRequestClose} 
                 contentLabel="Customers Modal"
             >
                 <CustomersForm 
                     onSubmit={onSubmit}
-                    cartItems={cartItems}  // Pasar cartItems a CustomersForm
-                    total={total}  // Pasar el total a CustomersForm
+                    cartItems={cartItems}  
+                    total={total}  
                 />
             </ReactModal>
         );

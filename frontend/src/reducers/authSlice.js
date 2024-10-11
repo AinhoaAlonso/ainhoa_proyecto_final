@@ -7,7 +7,7 @@ export const loginUser = createAsyncThunk(
     async ({ email, password }, { rejectWithValue }) => {
         
         try {
-            const response = await axios.post("http://127.0.0.1:8000/login", {
+            const response = await axios.post("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/login", {
                 users_email: email,
                 users_password: password,
             });

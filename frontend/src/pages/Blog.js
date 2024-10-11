@@ -23,7 +23,7 @@ export default class Blog extends Component{
         }
     }
     componentDidMount() {
-        axios.get("http://127.0.0.1:8000/posts")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/posts")
         .then(response =>{
             console.log("Traer los posts", response.data);
             this.setState({

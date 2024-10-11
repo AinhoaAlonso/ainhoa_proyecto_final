@@ -22,7 +22,7 @@ const UserForm = () => {
 
     const handleGetUsers = async () => {
         try {
-            await axios.get('http://127.0.0.1:8000/users')
+            await axios.get('https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/users')
             .then(response =>{
                 setUsers(response.data);
                 if (response.data.length > 0) {
@@ -41,8 +41,8 @@ const UserForm = () => {
         setLastnameOne(user.users_lastname_one || '');
         setLastnameTwo(user.users_lastname_two || '');
         setEmail(user.users_email || '');
-        setCurrentPassword(user.users_password || ''); // Almacenar la contraseña actual
-        setPassword(''); // Mantener vacío 
+        setCurrentPassword(user.users_password || ''); 
+        setPassword(''); 
         setRole(user.users_role || 'admin');
         setIsActive(user.users_is_active || false);
         setUserId(user.users_id); 
@@ -72,7 +72,7 @@ const UserForm = () => {
         try {
             if (isEditMode && userId) { 
                 formData.append("users_id", userId);
-                await axios.put("http://127.0.0.1:8000/update/users", 
+                await axios.put("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/update/users", 
                     formData, 
                     { headers: { "Content-Type": "multipart/form-data" }}
                 )
@@ -84,7 +84,7 @@ const UserForm = () => {
                     console.log("Usuario no actualizado", error);
                 });
             } else {
-                await axios.post("http://127.0.0.1:8000/insert/user", formData, {
+                await axios.post("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/insert/user", formData, {
                     headers: { "Content-Type": "multipart/form-data" }
                 });
                 setSuccessMessage('Usuario creado correctamente');

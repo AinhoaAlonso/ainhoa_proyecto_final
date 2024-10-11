@@ -19,7 +19,7 @@ const Admin = () => {
 
     useEffect(() => {
         const verifyToken = (token) => {
-            axios.get("http://127.0.0.1:8000/verify_token", {
+            axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/verify_token", {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then(response => {

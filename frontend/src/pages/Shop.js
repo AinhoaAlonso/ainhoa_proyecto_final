@@ -23,7 +23,7 @@ const Shop = () => {
     const cartItems = useSelector((state) => state.cart.cartItems); 
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/products")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/products")
         .then(response => {
             const activeProducts = response.data.filter(product => product.products_is_active);
             setProducts(activeProducts);

@@ -58,7 +58,7 @@ const BlogForm = () => {
     useEffect(() => {
 
         if (!userEmail) return;
-        axios.get("http://127.0.0.1:8000/users")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/users")
             .then(response => {
                 const user = response.data.find(user => user.users_email === userEmail);
                 if (user) {
@@ -75,7 +75,7 @@ const BlogForm = () => {
 
     const handleGetPosts = async () => {
 
-        await axios.get("http://127.0.0.1:8000/posts")
+        await axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/posts")
             .then(response => {
                 setPosts(response.data || []);
             })
@@ -128,7 +128,7 @@ const BlogForm = () => {
         if (editPostId) {
             formData.append("posts_id", editPostId);
 
-            axios.put("http://127.0.0.1:8000/update/posts", formData, {
+            axios.put("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/update/posts", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
                 .then(response => {
@@ -152,7 +152,7 @@ const BlogForm = () => {
                     console.log("Error actualizando post", error);
                 });
         } else {
-            axios.post("http://127.0.0.1:8000/insert/posts", formData, {
+            axios.post("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/insert/posts", formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             })
                 .then(response => {
@@ -182,7 +182,7 @@ const BlogForm = () => {
     };
 
     const handleDeleteClick = (post) => {
-        axios.delete(`http://127.0.0.1:8000/delete/posts/${post.posts_id}`)
+        axios.delete(`https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/delete/posts/${post.posts_id}`)
             .then(response => {
                 setPosts(posts.filter(item => item.posts_id !== post.posts_id));
             })

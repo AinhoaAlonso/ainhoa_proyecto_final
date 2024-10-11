@@ -23,15 +23,15 @@ export default class RichEditorText extends Component {
                 const editorState = EditorState.createWithContent(contentState);
                 return {
                     editorState: editorState,
-                    initialContentLoaded: true, // Marca como cargado
+                    initialContentLoaded: true, 
                 };
             }
         }
         // Si no hay contenido para editar y el contenido anterior estaba presente
         if (!contentToEdit && prevState.initialContentLoaded) {
             return {
-                editorState: EditorState.createEmpty(), // Reinicia el editor
-                initialContentLoaded: false, // Reinicia la carga del contenido
+                editorState: EditorState.createEmpty(), 
+                initialContentLoaded: false, 
             };
         }
         return null;

@@ -18,7 +18,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
     });
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8000/provinces")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/provinces")
             .then(response => setProvinces(response.data))
             .catch(error => console.log("Error al traer las provincias", error));
     }, []);
@@ -38,7 +38,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
     const handleSubmitCustomersForm = (event) => {
         event.preventDefault();
 
-        axios.get(`http://127.0.0.1:8000/customers/${customerData.email}`)
+        axios.get(`https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/customers/${customerData.email}`)
             .then(response => {
                 const customerId = response.data.customers_id;
                 return createOrder(customerId);
@@ -63,7 +63,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
     };
 
     const createCustomer = () => {
-        return axios.post("http://127.0.0.1:8000/insert/customers", {
+        return axios.post("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/insert/customers", {
             customers_name: customerData.name,
             customers_surname: customerData.surname,
             customers_address_one: customerData.addressOne,
@@ -80,7 +80,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
     };
 
     const createOrder = (customerId) => {
-        return axios.post("http://127.0.0.1:8000/insert/orders", {
+        return axios.post("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/insert/orders", {
             orders_date: new Date().toISOString().slice(0, 10),
             orders_total: total,
             orders_number: `ORD-${Date.now()}`,
@@ -92,7 +92,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
     const updateStockAndOrderProducts = (orderId) => {
         const stockPromises = cartItems.map(item => {
             const stockToUpdate = item.products_stock - item.quantity;
-            return axios.put(`http://127.0.0.1:8000/update/products/${item.products_id}`, null, {
+            return axios.put(`https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/update/products/${item.products_id}`, null, {
                 params: { products_stock: stockToUpdate }
             });
         });
@@ -100,7 +100,7 @@ const CustomersForm = ({ onSubmit, cartItems, total }) => {
         return Promise.all(stockPromises)
             .then(() => {
                 const productPromises = cartItems.map(item =>
-                    axios.post('http://127.0.0.1:8000/insert/orderproducts', {
+                    axios.post('https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/insert/orderproducts', {
                         orderproducts_name: item.products_name,
                         orderproducts_quantity: item.quantity,
                         orderproducts_price: item.products_price,

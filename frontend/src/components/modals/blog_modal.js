@@ -7,7 +7,6 @@ export default class BlogModal extends Component{
     constructor(props){
         super(props);
 
-        //Vamos a aplicar los estilos en línea para que prevalezcan a los que tiene por defecto el react-modal
         this.customStyles = {
             content : {
                 fontFamily: "Roboto, sans-serif",
@@ -19,22 +18,20 @@ export default class BlogModal extends Component{
                 width: "95%",
                 height:"95%"
             },
-            //Efecto de superposición,oscurece lo de abajo cuando se abre, color negro pero un poco transparente(0.75)
+  
             overlay:{
                 backgroundColor: "rgba(1, 1, 1, 0.75)"
             }
         };
     }
     render(){
-        const { isOpen, onRequestClose} = this.props; // Recibe la prop para controlar la apertura
-
-        //console.log("userEmail en el modal:", userEmail);
+        const { isOpen, onRequestClose} = this.props; 
 
         return (
             <ReactModal
                 style={this.customStyles}
                 isOpen={isOpen} 
-                onRequestClose={onRequestClose} // Para cerrar el modal
+                onRequestClose={onRequestClose} 
                 contentLabel="Blog Modal"
             >
                 <BlogForm/>

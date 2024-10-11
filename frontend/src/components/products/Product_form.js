@@ -64,7 +64,7 @@ const ProductForm = () => {
     };
 
     const handleGetProducts = () => {
-        axios.get("http://127.0.0.1:8000/products")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/products")
             .then(response => {
                 if (isMounted.current) { 
                     //console.log("Traer los productos", response.data);
@@ -124,7 +124,7 @@ const ProductForm = () => {
         if (editProductId) {
             formData.append("products_id", editProductId);
 
-            axios.put("http://127.0.0.1:8000/update/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
+            axios.put("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/update/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     if(isMounted.current){
                         //console.log("Producto actualizado", response);
@@ -150,7 +150,7 @@ const ProductForm = () => {
                 });
         } else {
             //console.log("productos", products);
-            axios.post("http://127.0.0.1:8000/insert/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
+            axios.post("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/insert/products", formData, { headers: { "Content-Type": "multipart/form-data" } })
                 .then(response => {
                     if(isMounted.current){
                         console.log("Respuesta insert product", response);

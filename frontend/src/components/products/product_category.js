@@ -14,7 +14,7 @@ export const ProductCategory=()=>{
 
     
     useEffect(()=>{
-        axios.get("http://127.0.0.1:8000/products")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/products")
         .then(response=>{
             
             const filteredProducts = response.data.filter(product => product.products_category === categoryName);
