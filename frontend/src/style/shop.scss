@@ -198,6 +198,8 @@
         padding: 0;
         margin-top: 30px;
         .up-nav-left-wrapper {
+            flex-direction: column;
+            gap: 5px;
             h1 {
                 margin: 0;
                 font-size: 1.3em;

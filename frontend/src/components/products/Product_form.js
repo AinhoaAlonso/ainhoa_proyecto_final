@@ -64,7 +64,7 @@ const ProductForm = () => {
     };
 
     const handleGetProducts = () => {
-        axios.get("http://127.0.0.1:8000/products")
+        axios.get("https://tucasaorganizada-backend-6ca489a38407.herokuapp.com/products")
             .then(response => {
                 if (isMounted.current) { 
                     //console.log("Traer los productos", response.data);
