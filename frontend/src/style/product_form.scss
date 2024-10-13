@@ -254,3 +254,12 @@
         display: none;
     }
 }
+
+@media (max-width:768px){
+    .product-form-container .product-form-wrapper {
+        flex-direction: column;
+        .products-item {
+            height: 30%;
+        }
+    }
+}

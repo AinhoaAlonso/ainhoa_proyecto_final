@@ -12,8 +12,11 @@ const ProductModal = ({ isOpen, onRequestClose, product }) => {
             right: "auto",
             marginRight: "-50%",
             transform: "translate(-50%, -50%)",
-            width: "1000px",
-            height:"550px"
+            maxWidth: "1000px",
+            maxHeight: "80%", 
+            overflowY: "auto", 
+            padding: "20px", 
+            bottom: "auto",
         },
     
         overlay:{

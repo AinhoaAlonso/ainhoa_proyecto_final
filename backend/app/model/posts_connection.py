@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from typing import List
 from fastapi import HTTPException
-from schema.posts_schema import PostSchema
+from app.schema.posts_schema import PostSchema
 
 load_dotenv()
 class PostsConnection():

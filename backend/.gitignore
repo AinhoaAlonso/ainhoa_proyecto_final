@@ -1,0 +1,4 @@
+/.venv/
+backup_plain_blog_db.sql
+startup.txt
+.github

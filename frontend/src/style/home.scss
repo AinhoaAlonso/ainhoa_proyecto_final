@@ -78,50 +78,37 @@
     }
 }
 
-// Media Queries para pantallas de 768px o menos
-@media (max-width: 768px) {
-    .home-container, .home-navigation-wrapper {
-        flex-direction: column; 
-        align-items: flex-start !important;
+@media (max-width: 1024px) {
+    .home-container{
+        .home-page-wrapper{
+            .links-images-wrapper{
+                .link-wrapper{
+                    img{
+                        width: auto;
+                        height: 300px;
+                        
+                    }
 
-        .logo-wrapper{
-            width: 80px !important;
-        }
-
-        .about-contact-wrapper {
-            grid-template-columns: 1fr; 
-            gap: 10px; 
-            font-size: 0.9em; 
-        }
-    }
-
-    .home-page-wrapper {
-        margin-top: 30px; 
-
-        .links-images-wrapper {
-            grid-template-columns: 1fr !important; 
-            gap: 20px !important; 
-
-            .link-wrapper {
-                width: 80% !important;
-                height: 160px !important; 
-            }
-
-            .text-blog {
-                font-size: 1.2em !important; 
+                }
+                
             }
         }
     }
 }
 
 @media (max-width: 480px) {
-    .home-navigation-wrapper {
-        margin-top: 15px; 
-    }
-
-    .home-page-wrapper {
-        .links-images-wrapper {
-            gap: 15px; 
+    .home-container{
+        .home-navigation-wrapper{
+            .about-contact-wrapper{
+                display: flex;
+                flex-direction: column;
+                align-items: end;       
+            }
+        }
+        .home-page-wrapper{
+            .links-images-wrapper{
+                grid-template-columns: 1fr;
+            }
         }
     }
 }

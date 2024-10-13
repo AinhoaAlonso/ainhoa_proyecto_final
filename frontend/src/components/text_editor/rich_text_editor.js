@@ -9,40 +9,50 @@ export default class RichEditorText extends Component {
         super(props);
         this.state = {
             editorState: EditorState.createEmpty(),
-            initialContentLoaded: false, // Para rastrear si se ha cargado el contenido inicial
+            previousContent: '', 
         };
-        this.onEditorStateChange = this.onEditorStateChange.bind(this);
     }
 
-    static getDerivedStateFromProps(nextProps, prevState) {
-        const { contentToEdit } = nextProps;
-        if (contentToEdit && !prevState.initialContentLoaded) {
+    componentDidMount(){
+        this.loadContent(this.props.contentToEdit);
+        
+    }
+
+    componentDidUpdate(prevProps) {
+        // Solo cargar contenido nuevo si ha cambiado
+        if (this.props.contentToEdit !== prevProps.contentToEdit) {
+            this.loadContent(this.props.contentToEdit);
+        }
+    }
+
+    loadContent(contentToEdit) {
+        if (contentToEdit) {
             const contentBlock = htmlToDraft(contentToEdit);
             if (contentBlock) {
                 const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
                 const editorState = EditorState.createWithContent(contentState);
-                return {
-                    editorState: editorState,
-                    initialContentLoaded: true, 
-                };
+                this.setState({ editorState }, () => {
+                    
+                    this.props.handleRichTextEditor(contentToEdit);
+                });
             }
+        } else {
+            this.setState({ editorState: EditorState.createEmpty() });
         }
-        // Si no hay contenido para editar y el contenido anterior estaba presente
-        if (!contentToEdit && prevState.initialContentLoaded) {
-            return {
-                editorState: EditorState.createEmpty(), 
-                initialContentLoaded: false, 
-            };
-        }
-        return null;
     }
 
     onEditorStateChange(editorState) {
-        this.setState({ editorState }, () => {
-            this.props.handleRichTextEditor(
-                draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()))
-            );
-        });
+        this.setState({ editorState });
+    }
+
+    handleBlur = () => {
+        const { editorState } = this.state;
+        const currentHtml = draftToHtml(convertToRaw(editorState.getCurrentContent()));
+        
+        // Solo llama a handleRichTextEditor cuando el contenido cambia
+        if (currentHtml !== this.props.contentToEdit) {
+            this.props.handleRichTextEditor(currentHtml);
+        }
     }
 
     render() {
@@ -52,7 +62,8 @@ export default class RichEditorText extends Component {
                     editorState={this.state.editorState}
                     wrapperClassName='text-editor-wrapper'
                     editorClassName='editor'
-                    onEditorStateChange={this.onEditorStateChange}
+                    onBlur={this.handleBlur}
+                    onEditorStateChange={(editorState) => this.onEditorStateChange(editorState)}
                 />
             </div>
         );

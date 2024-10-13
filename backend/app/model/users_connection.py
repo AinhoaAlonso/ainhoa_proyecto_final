@@ -5,7 +5,7 @@ import bcrypt
 from fastapi import HTTPException
 
 from typing import List, Optional
-from schema.users_schema import ResponseUsersSchema
+from app.schema.users_schema import ResponseUsersSchema
 
 load_dotenv()
 

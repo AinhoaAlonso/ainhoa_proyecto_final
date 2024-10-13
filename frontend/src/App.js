@@ -5,14 +5,13 @@ import {
     Route,
     Navigate
 } from 'react-router-dom';
-import { connect } from 'react-redux'; // Importa connect
+import { connect } from 'react-redux'; 
 
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
 import UserForm from './components/users/user_form';
-import Register from './pages/Register';
 import Services from './pages/Services';
 import Contact from './pages/Contact';
 import AboutMe from './pages/About-me';
@@ -82,7 +81,6 @@ class App extends Component {
                                         )
                                     }
                                 />
-                                <Route path='/register' element={<Register />} />
                                 <Route path='/about-me' element={<AboutMe />} />
                                 <Route path='/services' element={<Services />} />
                                 <Route path='/contact' element={<Contact />} />

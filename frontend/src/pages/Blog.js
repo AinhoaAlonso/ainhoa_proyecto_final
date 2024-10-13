@@ -40,8 +40,6 @@ export default class Blog extends Component{
 
     render(){
         console.log("Props en Blog:", this.props);
-
-
         const formatDate = (dateString) => {
             const date = new Date(dateString);
             const day = String(date.getDate()).padStart(2, '0');

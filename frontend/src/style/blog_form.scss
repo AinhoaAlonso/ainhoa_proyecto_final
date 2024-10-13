@@ -135,7 +135,6 @@
 
                 }
             }
-
             .save {
                 margin-top: 20px;
                 padding: 12px 24px;
@@ -221,5 +220,12 @@
     .dropzone.dz-clickable .dz-message{
         font-family: 'Roboto', sans-serif;
         color: $gris;
+    }
+}
+
+@media (max-width:768px){
+    .blogform-container .blogform-wrapper {
+        flex-direction: column;
+        
     }
 }

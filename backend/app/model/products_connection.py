@@ -4,8 +4,7 @@ from fastapi import UploadFile, File, HTTPException
 import psycopg2
 from psycopg2 import sql
 from typing import List
-#from fastapi import HTTPException
-from schema.products_schema import ProductsSchema
+from app.schema.products_schema import ProductsSchema
 
 load_dotenv()
 

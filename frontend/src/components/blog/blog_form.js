@@ -268,7 +268,7 @@ const BlogForm = () => {
                             <div className="blogform-data">
                                 <RichEditorText
                                     handleRichTextEditor={handleRichTextEditor}
-                                    contentToEdit={editPostId ? content : null}
+                                    contentToEdit={content}
                                 />
                             </div>
                             <div className="image-uploaders" {...getRootProps()} style={{ border: '2px dashed #ccc', padding: '20px', textAlign: 'center' }}>

@@ -3,7 +3,7 @@ import psycopg2
 from fastapi import HTTPException
 from typing import List
 from dotenv import load_dotenv
-from schema.orders_schema import CreateProvinces
+from app.schema.orders_schema import CreateProvinces
 
 load_dotenv()
 class OrdersCustomersConnections():

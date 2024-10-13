@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-
 const ProductDetails = ({product, onClose}) => {
 
     if (!product) {
